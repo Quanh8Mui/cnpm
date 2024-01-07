@@ -22,15 +22,18 @@ class KhachHang(db.Model):
     __tablename__ = 'khachhang'
     id = Column(Integer, primary_key=True, autoincrement=True)
     tenkhachhang = Column(String(100), nullable=False)
-    cccd = Column(String(12), nullable=False, unique=True)
-    sdt = Column(String(12), nullable=False, unique=True)
-    diachi = Column(String(255), nullable=True)
-    ngaysinh = Column(DateTime, nullable=True)
-    loaikhachhang_id = db.Column(Integer, ForeignKey(LoaiKhachHang.id), unique=True, nullable=False)
+    gioitinh = Column(String(12), default=None)
+    cccd = Column(String(12), nullable=True, default=None)
+    sdt = Column(String(12), default=None, nullable=True)
+    diachi = Column(String(255), nullable=True, default=None)
+    loaikhachhang_id = db.Column(Integer, ForeignKey(LoaiKhachHang.id), nullable=False)
     loaikhachhang = db.relationship('LoaiKhachHang', backref='loaikhachhangBackrefkhachhang')
     phieudanhgia = db.relationship('PhieuDanhGia', backref='phieudanhgiaBackrefkhachhang')
     phieuthuephong = db.relationship('PhieuThuePhong',
                                      backref=' phieuthuephongBackrefKhachHang')
+    phieudatphong = db.relationship('PhieuDatPhong',
+                                    backref=' phieudatphongBackrefKhachHang')
+    dsphieudatphong = db.relationship('DsPhieuDatPhong', backref='DsPhieuDatPhongBackrefKhachHang')
 
 
 class NguoiQuanTri(db.Model):
@@ -49,36 +52,30 @@ class NguoiQuanTri(db.Model):
 
 class LoaiPhong(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
-    tenloaiphong = Column(String(255), nullable=False)
+    tenloaiphong = Column(String(255), nullable=False, unique=True)
     loaiphong_donvitinhtien = db.relationship('LoaiPhong_DonVitinhTien',
-                                              backref=' loaiphong_donvitinhtienBackrefLoaiPhong')
-    phieudanhgia = db.relationship('PhieuDanhGia',
-                                   backref=' phieudanhgiaBackrefLoaiPhong')
+                                              backref='Loaiphong_donvitinhtienBackrefPhong')
 
 
 class Phong(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
+    tenphong = Column(String(255), nullable=False)
     ghichu = Column(String(255), nullable=False)
-    tinhtrang = Column(Boolean, nullable=False, default=0)
-    hinhanh = Column(String(255), nullable=False)
+    tinhtrang = Column(Boolean, nullable=False, default=False)
+    hinhanh = Column(String(255), default='https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704610281/khach-san'
+                                          '-gan-day-9-min_kswi8g.png')
     loaiphong_id = db.Column(Integer, ForeignKey(LoaiPhong.id), nullable=False)
-    phieuthuephong = db.relationship('PhieuThuePhong',
-                                     backref=' phieuthuephongBackrefPhong')
 
-
-class PhieuThuePhong(db.Model):
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    ngaybatdau = Column(DateTime, nullable=False)
-    ngayketthuc = Column(DateTime, nullable=False)
-    loaiphong_id = db.Column(Integer, ForeignKey(LoaiPhong.id), nullable=False)
-    khachhang_id = db.Column(Integer, ForeignKey(KhachHang.id), nullable=False)
+    phieudanhgia = db.relationship('PhieuDanhGia',
+                                   backref=' phieudanhgiaBackrefLoaiPhong')
+    dscacphongdadat = db.relationship('DsPhongDaDat', backref='dscacphongdadatBackrefPhong')
 
 
 class DonViTinhTien(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     ten = Column(String(255), nullable=False)
     loaiphong_donvitinhtien = db.relationship('LoaiPhong_DonVitinhTien',
-                                              backref=' loaiphong_donvitinhtienBackrefDonViTinhTien')
+                                              backref='phong_donvitinhtienBackrefDonViTinhTien')
 
 
 class LoaiPhong_DonVitinhTien(db.Model):
@@ -86,6 +83,39 @@ class LoaiPhong_DonVitinhTien(db.Model):
     loaiphong_id = db.Column(Integer, ForeignKey(LoaiPhong.id), nullable=False)
     donvitinhtien_id = db.Column(Integer, ForeignKey(DonViTinhTien.id), nullable=False)
     giatien = db.Column(Float, nullable=False)
+    phieuthuephong = db.relationship('PhieuThuePhong',
+                                     backref='phieuthuephongBackrefLoaiPhong_DonVitinhTien')
+    dsphongdadat = db.relationship('DsPhongDaDat', backref='dsphongdadatBackrefLoaiPhong_DonVitinhTien')
+
+
+class PhieuDatPhong(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    khachhang_id = db.Column(Integer, ForeignKey(KhachHang.id), nullable=False)
+    ngaybatdau = Column(DateTime, nullable=False)
+    ngayketthuc = Column(DateTime, nullable=False)
+    dsphieudatphong = db.relationship('DsPhieuDatPhong', backref='DsPhieuDatPhongBackrefPhieuDatPhong')
+    dscacphongdadat = db.relationship('DsPhongDaDat', backref='dscacphongdadatBackrefPhieuDatPhong')
+
+
+class DsPhieuDatPhong(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    khachhang_id = db.Column(Integer, ForeignKey(KhachHang.id), nullable=False)
+    phieudatphong_id = db.Column(Integer, ForeignKey(PhieuDatPhong.id), nullable=False)
+
+
+class DsPhongDaDat(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    phong_id = db.Column(Integer, ForeignKey(Phong.id), nullable=False)
+    loaiphong_donvitinhtien_id = db.Column(Integer, ForeignKey(LoaiPhong_DonVitinhTien.id), nullable=False)
+    phieudatphong_id = db.Column(Integer, ForeignKey(PhieuDatPhong.id), nullable=False)
+
+
+class PhieuThuePhong(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    ngaybatdau = Column(DateTime, nullable=False)
+    ngayketthuc = Column(DateTime, nullable=False)
+    loaiphong_donvitinhtien_id = db.Column(Integer, ForeignKey(LoaiPhong_DonVitinhTien.id), nullable=False)
+    khachhang_id = db.Column(Integer, ForeignKey(KhachHang.id), nullable=False)
 
 
 class PhieuDanhGia(db.Model):
@@ -93,7 +123,7 @@ class PhieuDanhGia(db.Model):
     ngaydanhgia = Column(DateTime, nullable=False)
     soSao = Column(Integer, nullable=False)
     khachhang_id = db.Column(Integer, ForeignKey(KhachHang.id), nullable=False)
-    loaiphong_id = db.Column(Integer, ForeignKey(LoaiPhong.id), nullable=False)
+    phong_id = db.Column(Integer, ForeignKey(Phong.id), nullable=False)
 
 
 class ThongSoQuyDinh(db.Model):
@@ -111,9 +141,49 @@ class HoaDon(db.Model):
                                      backref=' phieuthuekhamBackrefhoadon')
 
 
+class NhuCau(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    nhucau = Column(String(255), nullable=False)
+    phieuthuephong_id = db.Column(Integer, ForeignKey(PhieuThuePhong.id), nullable=False)
+    phieuthuephong = db.relationship('PhieuThuePhong',
+                                     backref='phieuthuekhamBackrefnhucau')
+
+
 if __name__ == "__main__":
     from app import app
 
     with app.app_context():
         db.create_all()
+        donvi1 = DonViTinhTien(ten='Giờ')
+        donvi2 = DonViTinhTien(ten='Ngày')
+        donvi3 = DonViTinhTien(ten='Tuần')
+        db.session.add_all([donvi1, donvi2, donvi3])
+        db.session.commit()
+
+        loaiphong1 = LoaiPhong(tenloaiphong='Phổ thông')
+        loaiphong2 = LoaiPhong(tenloaiphong='Thương gia')
+        loaiphong3 = LoaiPhong(tenloaiphong='Phòng V.I.P')
+        db.session.add_all([loaiphong1, loaiphong2, loaiphong3])
+        db.session.commit()
+
+        phong1 = Phong(tenphong='Ten Phong', ghichu='Phòng có 1 máy lạnh , 2 giường , 1 TV', tinhtrang=False,
+                       loaiphong_id=loaiphong2.id)
+        phong2 = Phong(tenphong='Ten Phong', ghichu='Phòng có 1 máy lạnh , 3 giường , 1 TV , 1 quạt , 1 tủ lạnh',
+                       tinhtrang=False,
+                       loaiphong_id=loaiphong3.id)
+        phong3 = Phong(tenphong='Ten Phong', ghichu='Phòng có 2 máy lạnh, 2 phòng ngủ riêng , 3 giường , 2 TV , 2 quạt',
+                       tinhtrang=False,
+                       loaiphong_id=loaiphong3.id)
+        phong4 = Phong(tenphong='Ten Phong', ghichu='Phòng có 0 máy lạnh , 1 giường , 1 TV , 1 quạt', tinhtrang=False,
+                       loaiphong_id=loaiphong1.id)
+        phong5 = Phong(tenphong='Ten Phong', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                       loaiphong_id=loaiphong1.id)
+        phong6 = Phong(tenphong='Ten Phong',
+                       ghichu='Phòng có 0 máy lạnh , 2 giường , 1 TV , 2 quạt , 2 phòng ngủ riêng biệt',
+                       tinhtrang=False,
+                       loaiphong_id=loaiphong2.id)
+        phong7 = Phong(tenphong='Ten Phong', ghichu='Phòng có 1 máy lạnh , 3 giường , 1 TV', tinhtrang=False,
+                       loaiphong_id=loaiphong3.id)
+
+        db.session.add_all([phong1, phong2, phong3, phong4, phong5, phong6, phong7])
         db.session.commit()
