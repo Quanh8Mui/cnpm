@@ -1,5 +1,6 @@
 from app.models import (KhachHang, LoaiKhachHang, Phong, LoaiPhong, PhieuThuePhong, LoaiPhong_DonVitinhTien,
-                        DonViTinhTien, UserRoleEnum, NguoiQuanTri, PhieuDanhGia, ThongSoQuyDinh, NhuCau)
+                        DonViTinhTien, UserRoleEnum, NguoiQuanTri, PhieuDanhGia, ThongSoQuyDinh, NhuCau, DsPhongDaDat,
+                        PhieuDatPhong)
 import hashlib
 
 
@@ -21,6 +22,10 @@ def get_donvitinhtien_by_id(id):
 
 def get_NguoiQuanTri_by_id(id):
     return NguoiQuanTri.query.get(id)
+
+
+def get_phieudatphong_by_id(id):
+    return PhieuDatPhong.query.get(id)
 
 
 def get_LoaiKhachHang_by_tenLoaiKhachHang(ten):
@@ -99,6 +104,14 @@ def get_value_by_key(key):
         value = value.filter_by(key=key).first()
 
     return value
+
+
+def get_dspdd_by_phieu_dat_phong_id(id):
+    dspdd = DsPhongDaDat.query
+    if id:
+        dspdd = dspdd.filter_by(phieudatphong_id=id).all()
+
+    return dspdd
 
 
 def get_nhucau_by_phieudatphong_id(id):

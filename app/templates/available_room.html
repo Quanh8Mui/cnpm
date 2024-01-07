@@ -19,6 +19,7 @@ content %}
             {% endfor %}
         </div>
         <form action="/dat-phong/lap-phieu-dat-phong" method="POST">
+<!--            truyền dữ liệu ẩn qua thẻ input dạng hidden-->
             <input type="hidden" name="available_room_id" value="{{a.id}}">
             <input type="hidden" name="customer_order_id" value="{{customer_order.id}}">
             <input type="hidden" name="start" value="{{start}}">
@@ -30,7 +31,9 @@ content %}
             <input type="hidden" name="lp_arr" value="{{lp_arr}}">
             <input type="hidden" name="dv_arr" value="{{dv_arr}}">
             <input type="hidden" name="price_arr" value="{{price_arr}}">
-
+            {% if phieudatphong %}
+            <input type="hidden" name="phieudatphong_id" value="{{phieudatphong.id}}">
+            {% endif %}
             <div style="display: flex;justify-content: center;align-items: center"><button type="submit">Đặt phòng</button></div>
         </form>
     </div>

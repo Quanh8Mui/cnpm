@@ -9,7 +9,7 @@ from flask_login import UserMixin
 class UserRoleEnum(enum.Enum):
     KHACH_HANG = 1
     ADMIN = 2
-    THU_NGAN = 3
+    NHAN_VIEN = 3
 
 
 class LoaiKhachHang(db.Model):
@@ -31,12 +31,12 @@ class KhachHang(db.Model):
     phieudanhgia = db.relationship('PhieuDanhGia', backref='phieudanhgiaBackrefkhachhang')
     phieuthuephong = db.relationship('PhieuThuePhong',
                                      backref=' phieuthuephongBackrefKhachHang')
-    phieudatphong = db.relationship('PhieuDatPhong',
-                                    backref=' phieudatphongBackrefKhachHang')
+    # phieudatphong = db.relationship('PhieuDatPhong',
+    #                                 backref=' phieudatphongBackrefKhachHang')
     dsphieudatphong = db.relationship('DsPhieuDatPhong', backref='DsPhieuDatPhongBackrefKhachHang')
 
 
-class NguoiQuanTri(db.Model):
+class NguoiQuanTri(db.Model, UserMixin):
     __tablename__ = 'manager'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
@@ -95,6 +95,7 @@ class PhieuDatPhong(db.Model):
     ngayketthuc = Column(DateTime, nullable=False)
     dsphieudatphong = db.relationship('DsPhieuDatPhong', backref='DsPhieuDatPhongBackrefPhieuDatPhong')
     dscacphongdadat = db.relationship('DsPhongDaDat', backref='dscacphongdadatBackrefPhieuDatPhong')
+    khachhang = db.relationship('KhachHang', backref='khachhangBackrefPhieuDatPhong')
 
 
 class DsPhieuDatPhong(db.Model):
@@ -145,7 +146,7 @@ class NhuCau(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     nhucau = Column(String(255), nullable=False)
     phieudatphong_id = db.Column(Integer, ForeignKey(PhieuDatPhong.id), nullable=False)
-    phieudatphong = db.relationship('PhieuDatPhong',backref='phieudatphongBackrefnhucau')
+    phieudatphong = db.relationship('PhieuDatPhong', backref='phieudatphongBackrefnhucau')
 
 
 if __name__ == "__main__":
@@ -153,6 +154,8 @@ if __name__ == "__main__":
 
     with app.app_context():
         db.create_all()
+        import hashlib
+
         donvi1 = DonViTinhTien(ten='Giờ')
         donvi2 = DonViTinhTien(ten='Ngày')
         donvi3 = DonViTinhTien(ten='Tuần')
@@ -165,24 +168,31 @@ if __name__ == "__main__":
         db.session.add_all([loaiphong1, loaiphong2, loaiphong3])
         db.session.commit()
 
-        phong1 = Phong(tenphong='Ten Phong', ghichu='Phòng có 1 máy lạnh , 2 giường , 1 TV', tinhtrang=False,
+        phong1 = Phong(tenphong='Phong 1', ghichu='Phòng có 1 máy lạnh , 2 giường , 1 TV', tinhtrang=False,
                        loaiphong_id=loaiphong2.id)
-        phong2 = Phong(tenphong='Ten Phong', ghichu='Phòng có 1 máy lạnh , 3 giường , 1 TV , 1 quạt , 1 tủ lạnh',
+        phong2 = Phong(tenphong='Phong 2', ghichu='Phòng có 1 máy lạnh , 3 giường , 1 TV , 1 quạt , 1 tủ lạnh',
                        tinhtrang=False,
                        loaiphong_id=loaiphong3.id)
-        phong3 = Phong(tenphong='Ten Phong', ghichu='Phòng có 2 máy lạnh, 2 phòng ngủ riêng , 3 giường , 2 TV , 2 quạt',
+        phong3 = Phong(tenphong='Phong 3', ghichu='Phòng có 2 máy lạnh, 2 phòng ngủ riêng , 3 giường , 2 TV , 2 quạt',
                        tinhtrang=False,
                        loaiphong_id=loaiphong3.id)
-        phong4 = Phong(tenphong='Ten Phong', ghichu='Phòng có 0 máy lạnh , 1 giường , 1 TV , 1 quạt', tinhtrang=False,
+        phong4 = Phong(tenphong='Phong 4', ghichu='Phòng có 0 máy lạnh , 1 giường , 1 TV , 1 quạt', tinhtrang=False,
                        loaiphong_id=loaiphong1.id)
-        phong5 = Phong(tenphong='Ten Phong', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+        phong5 = Phong(tenphong='Phong 5', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
                        loaiphong_id=loaiphong1.id)
-        phong6 = Phong(tenphong='Ten Phong',
+        phong6 = Phong(tenphong='Phong 6',
                        ghichu='Phòng có 0 máy lạnh , 2 giường , 1 TV , 2 quạt , 2 phòng ngủ riêng biệt',
                        tinhtrang=False,
                        loaiphong_id=loaiphong2.id)
-        phong7 = Phong(tenphong='Ten Phong', ghichu='Phòng có 1 máy lạnh , 3 giường , 1 TV', tinhtrang=False,
+        phong7 = Phong(tenphong='Phong 7', ghichu='Phòng có 1 máy lạnh , 3 giường , 1 TV', tinhtrang=False,
                        loaiphong_id=loaiphong3.id)
 
-        db.session.add_all([phong1, phong2, phong3, phong4, phong5, phong6, phong7])
+        admin = NguoiQuanTri(name='admin'
+                             , username='admin'
+                             , password=str(hashlib.md5('123456'.encode('utf-8')).hexdigest())
+                             , cccd="322323232", sdt='323232323',
+                             ngaysinh=datetime.strptime('2023-12-07 00:00:00', "%Y-%m-%d %H:%M:%S")
+                             , diachi='ABCXYZ', user_role=UserRoleEnum.ADMIN)
+
+        db.session.add_all([phong1, phong2, phong3, phong4, phong5, phong6, phong7, admin])
         db.session.commit()

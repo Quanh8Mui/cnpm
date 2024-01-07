@@ -22,12 +22,25 @@ cloudinary.config(
 
 @login.user_loader
 def load_nguoiquantri(id):
-    return dao.get_manager_by_id(id)
+    return dao.get_NguoiQuanTri_by_id(id)
 
 
 @app.route("/")
 def home():
+    continue_order = False
     return render_template("index.html")
+
+
+@app.route('/admin/login', methods=['POST'])
+def login_admin_process():
+    username = request.form.get('username')
+    password = request.form.get('password')
+
+    user = dao.auth_nguoiquantri(username=username, password=password)
+    if user:
+        login_user(user=user)
+
+    return redirect('/admin')
 
 
 @app.route("/dat-phong", methods=['POST'])
@@ -42,6 +55,8 @@ def booking_room():
     start = request.form.get('start_booking')
     end = request.form.get('end_booking')
     favor = request.form.get('favor')
+
+    phieudatphong = PhieuDatPhong()
 
     loaikhachhang = dao.get_LoaiKhachHang_by_tenLoaiKhachHang(country)
     if not loaikhachhang:
@@ -78,7 +93,6 @@ def booking_room():
             db.session.add(khachhang)
             db.session.commit()
             customers_id_arr.append(khachhang.id)
-    print(customers_id_arr)
     loaiphong = dao.get_loaiphong_by_tenloaiphong(room_type)
     phong_available = dao.get_phong_available_by_loaiphong_id(loaiphong.id)
 
@@ -102,10 +116,11 @@ def booking_room():
     return render_template("available_room.html", phong_available=phong_available,
                            loaiphong_donvitinhtien=loaiphong_donvitinhtien, customer_order=customer_order
                            , flag='success', lp_arr=lp_arr, dv_arr=dv_arr, length=length, price_arr=price_arr,
-                           start=start, end=end, customers_id_arr=customers_id_arr, favor=favor)
+                           start=start, end=end, customers_id_arr=customers_id_arr, favor=favor
+                            )
 
 
-@app.route("/dat-phong/lap-phieu-dat-phong", methods=['POST'])
+@app.route("/dat-phong/lap-phieu-dat-phong/", methods=['POST'])
 def lapphieudatphong():
     start = request.form.get('start')
     end = request.form.get('end')
@@ -118,10 +133,14 @@ def lapphieudatphong():
     lp_arr = eval(request.form.get('lp_arr'))
     dv_arr = eval(request.form.get('dv_arr'))
     price_arr = eval(request.form.get('price_arr'))
+    phieudatphong_id = request.form.get('phieudatphong_id')
 
-    phieudatphong = PhieuDatPhong(ngaybatdau=start, ngayketthuc=end, khachhang_id=customer_order.id)
-    db.session.add(phieudatphong)
-    db.session.commit()
+    if not phieudatphong_id:
+        phieudatphong = PhieuDatPhong(ngaybatdau=start, ngayketthuc=end, khachhang_id=customer_order.id)
+        db.session.add(phieudatphong)
+        db.session.commit()
+    else:
+        phieudatphong = dao.get_phieudatphong_by_id(phieudatphong_id)
 
     for i in range(len(customers_id_arr)):
         dsphieudatphong = DsPhieuDatPhong(khachhang_id=customers_id_arr[i], phieudatphong_id=phieudatphong.id)
@@ -146,7 +165,7 @@ def lapphieudatphong():
     return render_template("available_room.html", phong_available=phong_available,
                            loaiphong_donvitinhtien=loaiphong_donvitinhtien, customer_order=customer_order
                            , flag='success', lp_arr=lp_arr, dv_arr=dv_arr, length=3, price_arr=price_arr,
-                           start=start, end=end, customers_id_arr=customers_id_arr)
+                           start=start, end=end, customers_id_arr=customers_id_arr, phieudatphong=phieudatphong)
 
 
 if __name__ == '__main__':
