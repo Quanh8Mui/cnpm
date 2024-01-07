@@ -46,8 +46,9 @@ class AuthenticatedNhanVienPhieuDatPhong(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.user_role == UserRoleEnum.NHAN_VIEN
 
-    column_list = [ 'khachhang.tenkhachhang', 'ngaybatdau', 'ngayketthuc', 'khachhang.cccd',
-                   'dscacphongdadat.phong_id']
+    column_list = ['khachhang.tenkhachhang', 'ngaybatdau', 'ngayketthuc', 'khachhang.cccd',
+                   'dscacphongdadat.phong_id', 'dsphieudatphong.khachhang_id']
+    column_searchable_list = ('khachhang.tenkhachhang', 'khachhang.cccd')
 
     def phongid_formatter(self, context, model, name):
         rooms = []
@@ -59,8 +60,19 @@ class AuthenticatedNhanVienPhieuDatPhong(ModelView):
 
         return rooms
 
+    def khachhangid_formatter(self, context, model, name):
+        khachhangs = []
+        ks = dao.get_dspdp_by_phieu_dat_phong_id(model.id)
+
+        for k in ks:
+            khachhang = dao.get_KhachHang_by_id(k.khachhang_id)
+            khachhangs.append(khachhang.tenkhachhang)
+
+        return khachhangs if len(khachhangs) != 0 else 'Không có ai'
+
     column_formatters = {
         'dscacphongdadat.phong_id': phongid_formatter,
+        'dsphieudatphong.khachhang_id': khachhangid_formatter,
     }
 
 
@@ -68,6 +80,22 @@ class PhieuDatPhongView(AuthenticatedNhanVienPhieuDatPhong):
     can_create = False
     can_edit = False
     can_delete = False
+
+
+class AuthenticatedNhanVienLapPhieuThuePhong(BaseView):
+
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.user_role == UserRoleEnum.NHAN_VIEN
+
+    @expose('/')
+    def index(self):
+        phong_available = dao.get_phong_available_by_tinhtrang()
+        length = len(phong_available)
+        return self.render('admin/lapphieuthuephong.html', phong_available=phong_available, length=length)
+
+
+class LapPhieuThuePhongView(AuthenticatedNhanVienLapPhieuThuePhong):
+    pass
 
 
 class MyLogoutView(AuthenticatedUser):
@@ -79,4 +107,5 @@ class MyLogoutView(AuthenticatedUser):
 
 admin.add_view(NguoiQuanTriView(NguoiQuanTri, db.session, name="Quản lí nhân sự"))
 admin.add_view(PhieuDatPhongView(PhieuDatPhong, db.session, name="Tra cứu lịch đặt phòng"))
+admin.add_view(LapPhieuThuePhongView(name='Lập phiếu thuê phòng', endpoint='lapphieuthuephong'))
 admin.add_view(MyLogoutView(name='Đăng xuất'))

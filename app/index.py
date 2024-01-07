@@ -56,8 +56,6 @@ def booking_room():
     end = request.form.get('end_booking')
     favor = request.form.get('favor')
 
-    phieudatphong = PhieuDatPhong()
-
     loaikhachhang = dao.get_LoaiKhachHang_by_tenLoaiKhachHang(country)
     if not loaikhachhang:
         loaikhachhang = LoaiKhachHang(tenloaikhachhang=country)
@@ -117,7 +115,7 @@ def booking_room():
                            loaiphong_donvitinhtien=loaiphong_donvitinhtien, customer_order=customer_order
                            , flag='success', lp_arr=lp_arr, dv_arr=dv_arr, length=length, price_arr=price_arr,
                            start=start, end=end, customers_id_arr=customers_id_arr, favor=favor
-                            )
+                           )
 
 
 @app.route("/dat-phong/lap-phieu-dat-phong/", methods=['POST'])
@@ -166,6 +164,12 @@ def lapphieudatphong():
                            loaiphong_donvitinhtien=loaiphong_donvitinhtien, customer_order=customer_order
                            , flag='success', lp_arr=lp_arr, dv_arr=dv_arr, length=3, price_arr=price_arr,
                            start=start, end=end, customers_id_arr=customers_id_arr, phieudatphong=phieudatphong)
+
+
+@app.route("/admin/lapphieuthuephong", methods=['GET'])
+@login_required
+def lapphieuthuephong():
+    return render_template("admin/lapphieuthuephong.html")
 
 
 if __name__ == '__main__':
