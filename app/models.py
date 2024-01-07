@@ -138,15 +138,14 @@ class HoaDon(db.Model):
     thanhtien = Column(Float, nullable=False)
     phieuthuephong_id = db.Column(Integer, ForeignKey(PhieuThuePhong.id), nullable=False)
     phieuthuephong = db.relationship('PhieuThuePhong',
-                                     backref=' phieuthuekhamBackrefhoadon')
+                                     backref=' phieuthuephongBackrefhoadon')
 
 
 class NhuCau(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     nhucau = Column(String(255), nullable=False)
-    phieuthuephong_id = db.Column(Integer, ForeignKey(PhieuThuePhong.id), nullable=False)
-    phieuthuephong = db.relationship('PhieuThuePhong',
-                                     backref='phieuthuekhamBackrefnhucau')
+    phieudatphong_id = db.Column(Integer, ForeignKey(PhieuDatPhong.id), nullable=False)
+    phieudatphong = db.relationship('PhieuDatPhong',backref='phieudatphongBackrefnhucau')
 
 
 if __name__ == "__main__":

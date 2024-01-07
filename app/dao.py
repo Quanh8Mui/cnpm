@@ -101,6 +101,14 @@ def get_value_by_key(key):
     return value
 
 
+def get_nhucau_by_phieudatphong_id(id):
+    nhucau = NhuCau.query
+    if id:
+        nhucau = nhucau.filter_by(phieudatphong_id=id).first()
+
+    return nhucau
+
+
 def auth_nguoiquantri(username, password):
     password = str(hashlib.md5(password.strip().encode('utf-8')).hexdigest())
     return NguoiQuanTri.query.filter(NguoiQuanTri.username.__eq__(username.strip()),

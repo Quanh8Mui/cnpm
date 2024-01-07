@@ -39,7 +39,6 @@ def booking_room():
     gender = request.form.get('gender')
     room_type = request.form.get('room_type')
     address = request.form.get('address')
-    unit = request.form.get('unit')
     start = request.form.get('start_booking')
     end = request.form.get('end_booking')
     favor = request.form.get('favor')
@@ -103,13 +102,14 @@ def booking_room():
     return render_template("available_room.html", phong_available=phong_available,
                            loaiphong_donvitinhtien=loaiphong_donvitinhtien, customer_order=customer_order
                            , flag='success', lp_arr=lp_arr, dv_arr=dv_arr, length=length, price_arr=price_arr,
-                            start=start, end=end, customers_id_arr=customers_id_arr)
+                           start=start, end=end, customers_id_arr=customers_id_arr, favor=favor)
 
 
 @app.route("/dat-phong/lap-phieu-dat-phong", methods=['POST'])
 def lapphieudatphong():
     start = request.form.get('start')
     end = request.form.get('end')
+    favor = request.form.get('favor')
     customer_order = dao.get_KhachHang_by_id(request.form.get('customer_order_id'))
     dvtt = dao.get_donvitinhtien_by_ten(request.form.get('dvtt'))
     lp = dao.get_loaiphong_by_tenloaiphong(request.form.get('lp'))
@@ -118,7 +118,6 @@ def lapphieudatphong():
     lp_arr = eval(request.form.get('lp_arr'))
     dv_arr = eval(request.form.get('dv_arr'))
     price_arr = eval(request.form.get('price_arr'))
-
 
     phieudatphong = PhieuDatPhong(ngaybatdau=start, ngayketthuc=end, khachhang_id=customer_order.id)
     db.session.add(phieudatphong)
@@ -137,11 +136,17 @@ def lapphieudatphong():
     db.session.commit()
 
     phong_available = dao.get_phong_available_by_loaiphong_id(lp.id)
+    if favor:
+        favor_dao = dao.get_nhucau_by_phieudatphong_id(phieudatphong.id)
+        if not favor_dao:
+            favor_dao = NhuCau(nhucau=favor, phieudatphong_id=phieudatphong.id)
+            db.session.add(favor_dao)
+            db.session.commit()
 
     return render_template("available_room.html", phong_available=phong_available,
-                    loaiphong_donvitinhtien=loaiphong_donvitinhtien, customer_order=customer_order
-                    , flag='success', lp_arr=lp_arr, dv_arr=dv_arr, length=3, price_arr=price_arr,
-                     start=start, end=end, customers_id_arr=customers_id_arr)
+                           loaiphong_donvitinhtien=loaiphong_donvitinhtien, customer_order=customer_order
+                           , flag='success', lp_arr=lp_arr, dv_arr=dv_arr, length=3, price_arr=price_arr,
+                           start=start, end=end, customers_id_arr=customers_id_arr)
 
 
 if __name__ == '__main__':
