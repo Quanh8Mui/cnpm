@@ -172,7 +172,7 @@ if __name__ == "__main__":
         db.create_all()
         import hashlib
 
-        loaikhachhang1 = LoaiKhachHang(tenloaikhachhang ='Viet Nam')
+        loaikhachhang1 = LoaiKhachHang(tenloaikhachhang='Viet Nam')
         loaikhachhang2 = LoaiKhachHang(tenloaikhachhang='Others')
         db.session.add_all([loaikhachhang1, loaikhachhang2])
         db.session.commit()
@@ -189,24 +189,126 @@ if __name__ == "__main__":
         db.session.add_all([loaiphong1, loaiphong2, loaiphong3])
         db.session.commit()
 
-        phong1 = Phong(tenphong='Phong 1', ghichu='Phòng có 1 máy lạnh , 2 giường , 1 TV', tinhtrang=False,
-                       loaiphong_id=loaiphong2.id)
-        phong2 = Phong(tenphong='Phong 2', ghichu='Phòng có 1 máy lạnh , 3 giường , 1 TV , 1 quạt , 1 tủ lạnh',
-                       tinhtrang=False,
-                       loaiphong_id=loaiphong3.id)
-        phong3 = Phong(tenphong='Phong 3', ghichu='Phòng có 2 máy lạnh, 2 phòng ngủ riêng , 3 giường , 2 TV , 2 quạt',
-                       tinhtrang=False,
-                       loaiphong_id=loaiphong3.id)
-        phong4 = Phong(tenphong='Phong 4', ghichu='Phòng có 0 máy lạnh , 1 giường , 1 TV , 1 quạt', tinhtrang=False,
-                       loaiphong_id=loaiphong1.id)
+        phong1 = Phong(tenphong='Phong 1', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                       loaiphong_id=loaiphong1.id,
+                       hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong2 = Phong(tenphong='Phong 2', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                       loaiphong_id=loaiphong1.id,
+                       hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong3 = Phong(tenphong='Phong 3', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                       loaiphong_id=loaiphong1.id,
+                       hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong4 = Phong(tenphong='Phong 4', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                       loaiphong_id=loaiphong1.id,
+                       hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
         phong5 = Phong(tenphong='Phong 5', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
-                       loaiphong_id=loaiphong1.id)
-        phong6 = Phong(tenphong='Phong 6',
-                       ghichu='Phòng có 0 máy lạnh , 2 giường , 1 TV , 2 quạt , 2 phòng ngủ riêng biệt',
-                       tinhtrang=False,
-                       loaiphong_id=loaiphong2.id)
-        phong7 = Phong(tenphong='Phong 7', ghichu='Phòng có 1 máy lạnh , 3 giường , 1 TV', tinhtrang=False,
-                       loaiphong_id=loaiphong3.id)
+                       loaiphong_id=loaiphong1.id,
+                       hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong6 = Phong(tenphong='Phong 6', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                       loaiphong_id=loaiphong1.id,
+                       hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong7 = Phong(tenphong='Phong 7', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                       loaiphong_id=loaiphong1.id,
+                       hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong8 = Phong(tenphong='Phong 8', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                       loaiphong_id=loaiphong1.id,
+                       hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong9 = Phong(tenphong='Phong 9', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                       loaiphong_id=loaiphong1.id,
+                       hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong10 = Phong(tenphong='Phong 10', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong1.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong11 = Phong(tenphong='Phong 11', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong1.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong12 = Phong(tenphong='Phong 12', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong1.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong13 = Phong(tenphong='Phong 13', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong1.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong14 = Phong(tenphong='Phong 14', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong1.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong15 = Phong(tenphong='Phong 15', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong1.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong16 = Phong(tenphong='Phong 16', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong1.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong17 = Phong(tenphong='Phong 17', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong1.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong18 = Phong(tenphong='Phong 18', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong1.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong19 = Phong(tenphong='Phong 19', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong1.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong20 = Phong(tenphong='Phong 20', ghichu='Phòng có 1 máy lạnh , 1 giường , 1 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong1.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706902/tnfbho3bhagtndjbggyi.jpg")
+        phong21 = Phong(tenphong='Phong 21', ghichu='2 phòng có 2 máy lạnh , 2 giường , 2 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong2.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704610281/khach-san-gan-day-9-min_kswi8g.png")
+        phong22 = Phong(tenphong='Phong 22', ghichu='2 phòng có 2 máy lạnh , 2 giường , 2 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong2.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704610281/khach-san-gan-day-9-min_kswi8g.png")
+        phong23 = Phong(tenphong='Phong 23', ghichu='2 phòng có 2 máy lạnh , 2 giường , 2 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong2.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704610281/khach-san-gan-day-9-min_kswi8g.png")
+        phong24 = Phong(tenphong='Phong 24', ghichu='2 phòng có 2 máy lạnh , 2 giường , 2 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong2.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704610281/khach-san-gan-day-9-min_kswi8g.png")
+        phong25 = Phong(tenphong='Phong 25', ghichu='2 phòng có 2 máy lạnh , 2 giường , 2 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong2.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704610281/khach-san-gan-day-9-min_kswi8g.png")
+        phong26 = Phong(tenphong='Phong 26', ghichu='2 phòng có 2 máy lạnh , 2 giường , 2 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong2.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704610281/khach-san-gan-day-9-min_kswi8g.png")
+        phong27 = Phong(tenphong='Phong 27', ghichu='2 phòng có 2 máy lạnh , 2 giường , 2 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong2.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704610281/khach-san-gan-day-9-min_kswi8g.png")
+        phong28 = Phong(tenphong='Phong 28', ghichu='2 phòng có 2 máy lạnh , 2 giường , 2 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong2.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704610281/khach-san-gan-day-9-min_kswi8g.png")
+        phong29 = Phong(tenphong='Phong 29', ghichu='2 phòng có 2 máy lạnh , 2 giường , 2 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong2.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704610281/khach-san-gan-day-9-min_kswi8g.png")
+        phong30 = Phong(tenphong='Phong 30', ghichu='2 phòng có 2 máy lạnh , 2 giường , 2 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong2.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704610281/khach-san-gan-day-9-min_kswi8g.png")
+        phong31 = Phong(tenphong='Phong 31', ghichu='3 phòng có 3 máy lạnh , 3 giường , 3 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong3.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706913/gbctc3plgysydtquxvzl.jpg")
+        phong32 = Phong(tenphong='Phong 32', ghichu='3 phòng có 3 máy lạnh , 3 giường , 3 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong3.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706913/gbctc3plgysydtquxvzl.jpg")
+        phong33 = Phong(tenphong='Phong 33', ghichu='3 phòng có 3 máy lạnh , 3 giường , 3 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong3.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706913/gbctc3plgysydtquxvzl.jpg")
+        phong34 = Phong(tenphong='Phong 34', ghichu='3 phòng có 3 máy lạnh , 3 giường , 3 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong3.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706913/gbctc3plgysydtquxvzl.jpg")
+        phong35 = Phong(tenphong='Phong 35', ghichu='3 phòng có 3 máy lạnh , 3 giường , 3 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong3.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706913/gbctc3plgysydtquxvzl.jpg")
+        phong36 = Phong(tenphong='Phong 36', ghichu='3 phòng có 3 máy lạnh , 3 giường , 3 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong3.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706913/gbctc3plgysydtquxvzl.jpg")
+        phong37 = Phong(tenphong='Phong 37', ghichu='3 phòng có 3 máy lạnh , 3 giường , 3 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong3.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706913/gbctc3plgysydtquxvzl.jpg")
+        phong38 = Phong(tenphong='Phong 38', ghichu='3 phòng có 3 máy lạnh , 3 giường , 3 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong3.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706913/gbctc3plgysydtquxvzl.jpg")
+        phong39 = Phong(tenphong='Phong 39', ghichu='3 phòng có 3 máy lạnh , 3 giường , 3 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong3.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706913/gbctc3plgysydtquxvzl.jpg")
+        phong40 = Phong(tenphong='Phong 40', ghichu='3 phòng có 3 máy lạnh , 3 giường , 3 TV', tinhtrang=False,
+                        loaiphong_id=loaiphong3.id,
+                        hinhanh="https://res.cloudinary.com/ds7ikpaeh/image/upload/v1704706913/gbctc3plgysydtquxvzl.jpg")
 
         admin = NguoiQuanTri(name='admin'
                              , username='admin'
@@ -215,5 +317,9 @@ if __name__ == "__main__":
                              ngaysinh=datetime.strptime('2023-12-07 00:00:00', "%Y-%m-%d %H:%M:%S")
                              , diachi='ABCXYZ', user_role=UserRoleEnum.ADMIN)
 
-        db.session.add_all([phong1, phong2, phong3, phong4, phong5, phong6, phong7, admin])
+        db.session.add_all([phong1, phong2, phong3, phong4, phong5, phong6, phong7, phong8, phong9, phong10,
+                            phong11, phong12, phong13, phong14, phong15, phong16, phong17, phong18, phong19, phong20,
+                            phong21, phong22, phong23, phong24, phong25, phong26, phong27, phong28, phong29, phong30,
+                            phong31, phong32, phong33, phong34, phong35, phong36, phong37, phong38, phong39, phong40,
+                            admin])
         db.session.commit()

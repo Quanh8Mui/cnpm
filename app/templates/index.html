@@ -1,260 +1,331 @@
 {% extends 'layout/base.html' %} {% block title %}Booking{% endblock %} {% block
 content %}
 <div>
-  <h1 class="text-center text-success">Đặt phòng nhanh</h1>
 
-  {% if flag == 'out_of_room' %}
-  <div class="alert alert-danger" role="alert">
-    Loại phòng hiện tại đã hết , mời đặt loại phòng khác !
-  </div>
-  {% elif flag == 'success' %}
+    {% if flag == 'out_of_room' %}
+    <div class="alert alert-danger" role="alert">
+        Loại phòng hiện tại đã hết , mời đặt loại phòng khác !
+    </div>
+    {% elif flag == 'success' %}
     <div class="alert alert-success" role="alert">
-    Đăng kí đặt phòng thành công !
+        Đăng kí đặt phòng thành công !
+    </div>
+    {% endif %}
+
+    <div class="containter">
+
+      <div class="row justify-content-center mt-5 mb-5">
+    <div class="col col-lg-4">
+      <img
+        src="https://hotelsaigon.net/public/frontend/images/about-sweethotel.png"
+        alt="main"
+      />
+    </div>
+    <div class="col col-lg-4 d-flex justify-content-center align-items-center flex-direction-column">
+      <div class="content">
+          <h3>VÂN HÀ HOTEL</h3>
+          <h4>Hệ thống khách sạn 3 sao tại các quận trung tâm Sài Gòn</h4>
+          <span class="d-block">Toạ lạc tại 440 Cộng Hoà - Phường 13 Quận Tân Bình. Với hệ thống phòng ốc thoáng mát sạch sẽ</span>
+          <button type="button" class="btn btn-warning">Xem thêm</button>
+    </div>
   </div>
-  {% endif %}
-
-  <form method="post" action="/dat-phong">
-    <div class="container">
-      <div class="row justify-content-lg-center">
-        <div class="col col-lg-4">
-          <div class="form-floating mb-3 mt-3">
-            <input
-              id="name"
-              type="text"
-              class="form-control"
-              required
-              name="name_customer"
-              placeholder="Nhập họ tên"
-            />
-            <label for="name"
-              >Họ tên<span class="required-icon">(*)</span></label
-            >
-          </div>
-
-          <div class="form-floating mb-3 mt-3">
-            <input
-              type="text"
-              class="form-control"
-              name="cccd"
-              id="cccd"
-              placeholder="Nhập số CCCD"
-            />
-            <label for="cccd">CCCD</label>
-          </div>
-
-          <div class="form-floating mb-3 mt-3">
-            <select name="country" class="form-control">
-                <option value="Viet Nam">Viet Nam</option>
-                <option value="Others">Others</option>
-            </select>
-            <label>Quốc tịch</label>
-          </div>
-
-
-
+        <div class="row">
+            <div class="col col-lg-4">
+                <div class="card">
+                    <img
+                            src="https://hotelsaigon.net/public/hotel/uploads/thumbnails/FAMILY%20ROOM%206.jpg"
+                            class="card-img-top"
+                            alt="..."
+                    />
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">
+                            Some quick example text to build on the card title and make up the
+                            bulk of the card's content.
+                        </p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-lg-4">
+                <div class="card">
+                    <img
+                            src="https://hotelsaigon.net/public/hotel/uploads/thumbnails/FAMILY%20ROOM%206.jpg"
+                            class="card-img-top"
+                            alt="..."
+                    />
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">
+                            Some quick example text to build on the card title and make up the
+                            bulk of the card's content.
+                        </p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-lg-4">
+                <div class="card">
+                    <img
+                            src="https://hotelsaigon.net/public/hotel/uploads/thumbnails/FAMILY%20ROOM%206.jpg"
+                            class="card-img-top"
+                            alt="..."
+                    />
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">
+                            Some quick example text to build on the card title and make up the
+                            bulk of the card's content.
+                        </p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col col-lg-4">
-          <div class="form-floating mt-3 mb-3">
-            <input
-              id="phone"
-              type="text"
-              class="form-control"
-              name="phone"
-              placeholder="Nhập số điện thoại"
-            />
-            <label for="phone"
-              >Số điện thoại<span class="required-icon">(*)</span></label
-            >
-          </div>
-          <div class="form-floating mt-3 mb-3">
-            <select
-              required
-              class="form-control"
-              name="gender"
-              placeholder="Chon"
-            >
-              <option value="men">Nam</option>
-              <option value="woman">Nữ</option>
-              <option value="others">Khác</option>
-            </select>
-            <label
-              >Giới tính<span class="required-icon">(*)</span></label
-            >
-          </div>
-          <div class="form-floating mt-3 mb-3">
-            <select
-              required
-              class="form-control"
-              name="room_type"
-              id="room_type"
-              placeholder="Chon"
-            >
-              <option value="Phổ thông">Phòng phổ thông</option>
-              <option value="Thương gia">Phòng thương gia</option>
-              <option value="Phòng V.I.P">Phòng V.I.P</option>
-            </select>
-            <label for="room_type"
-              >Loại phòng<span class="required-icon">(*)</span></label
-            >
-          </div>
-          <div class="form-floating mt-3 mb-3">
-            <input
-              id="address"
-              type="text"
-              class="form-control"
-              name="address"
-              placeholder="Nhập địa chỉ"
-            />
-            <label for="address">Địa chỉ</label>
-          </div>
-        </div>
-        <div class="col col-lg-8">
-          <div class="form-floating mt-3 mb-3">
-            <input
-              required
-              type="date"
-              class="form-control"
-              name="start_booking"
-            />
-            <label for="book-date"
-              >Ngày đặt phòng<span class="required-icon">(*)</span></label
-            >
-          </div>
-        </div>
-        <div class="col col-lg-8">
-          <div class="form-floating mt-3 mb-3">
-            <input
-              id="book-date"
-              required
-              type="date"
-              class="form-control"
-              name="end_booking"
-            />
-            <label for="book-date"
-              >Ngày trả phòng<span class="required-icon">(*)</span></label
-            >
-          </div>
-        </div>
-
-          <div class="row justify-content-lg-center">
-        <div class="col col-lg-3">
-          <div class="form-floating mb-3 mt-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_name"
-              placeholder="Nhập họ tên"
-            />
-            <label for="name"
-              >Họ tên<span class="required-icon">(*)</span></label
-            >
-          </div>
-        </div>
-        <div class="col col-lg-3">
-          <div class="form-floating mt-3 mb-3">
-            <select name="customer_country" class="form-control">
-                <option value="Viet Nam">Viet Nam</option>
-                <option value="Others">Others</option>
-            </select>
-            <label>Quốc tịch</label>
-          </div>
-        </div>
-        <div class="col col-lg-3">
-          <div class="form-floating mt-3 mb-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_cccd"
-              placeholder="Nhập số điện thoại"
-            />
-            <label for="phone"
-              >CCCD<span class="required-icon">(*)</span></label
-            >
-          </div>
-        </div>
-        <div class="col col-lg-3">
-          <div class="form-floating mt-3 mb-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_address"
-              placeholder="Địa chỉ"
-            />
-            <label for="phone"
-              >Địa chỉ<span class="required-icon">(*)</span></label
-            >
-          </div>
-        </div>
-      </div>
-          <div class="row justify-content-lg-center">
-        <div class="col col-lg-3">
-          <div class="form-floating mb-3 mt-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_name"
-              placeholder="Nhập họ tên"
-            />
-            <label for="name"
-              >Họ tên<span class="required-icon">(*)</span></label
-            >
-          </div>
-        </div>
-        <div class="col col-lg-3">
-          <div class="form-floating mt-3 mb-3">
-            <select name="customer_country" class="form-control">
-                <option value="Viet Nam">Viet Nam</option>
-                <option value="Others">Others</option>
-            </select>
-            <label>Quốc tịch</label>
-          </div>
-        </div>
-        <div class="col col-lg-3">
-          <div class="form-floating mt-3 mb-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_cccd"
-              placeholder="Nhập số điện thoại"
-            />
-            <label for="phone"
-              >CCCD<span class="required-icon">(*)</span></label
-            >
-          </div>
-        </div>
-        <div class="col col-lg-3">
-          <div class="form-floating mt-3 mb-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_address"
-              placeholder="Địa chỉ"
-            />
-            <label for="phone"
-              >Địa chỉ<span class="required-icon">(*)</span></label
-            >
-          </div>
-        </div>
-      </div>
-
-
-        <div class="col col-lg-8">
-          <div class="form-group mb-3 mt-3">
-            <label for="favor">Những ghi chú của bạn?</label>
-            <textarea
-              class="form-control"
-              id="favor"
-              rows="3"
-              name="favor"
-            ></textarea>
-          </div>
-        </div>
-      </div>
     </div>
-    
-    <div class="form-floating mt-3 mb-3 btn-wrapper">
-      <input type="submit" class="btn btn-danger btn-icon" value="Đặt lịch" />
-    </div>
-  </form>
+
+    <h1 class="text-center ">Đặt phòng nhanh</h1>
+    <form method="post" action="/dat-phong">
+        <div class="container border border-dark">
+            <div class="row justify-content-lg-center">
+                <div class="col col-lg-4">
+                    <div class="form-floating mb-3 mt-3">
+                        <input
+                                id="name"
+                                type="text"
+                                class="form-control"
+                                required
+                                name="name_customer"
+                                placeholder="Nhập họ tên"
+                        />
+                        <label for="name"
+                        >Họ tên<span class="required-icon">(*)</span></label
+                        >
+                    </div>
+
+                    <div class="form-floating mb-3 mt-3">
+                        <input
+                                required
+                                type="text"
+                                class="form-control"
+                                name="cccd"
+                                id="cccd"
+                                placeholder="Nhập số CCCD"
+                        />
+                        <label for="cccd">CCCD</label>
+                    </div>
+
+                    <div class="form-floating mb-3 mt-3">
+                        <select name="country" class="form-control">
+                            <option value="Viet Nam">Viet Nam</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <label>Quốc tịch</label>
+                    </div>
+
+
+                </div>
+                <div class="col col-lg-4">
+                    <div class="form-floating mt-3 mb-3">
+                        <input  required
+                                id="phone"
+                                type="text"
+                                class="form-control"
+                                name="phone"
+                                placeholder="Nhập số điện thoại"
+                        />
+                        <label for="phone"
+                        >Số điện thoại<span class="required-icon">(*)</span></label
+                        >
+                    </div>
+                    <div class="form-floating mt-3 mb-3">
+                        <select
+                                required
+                                class="form-control"
+                                name="gender"
+                                placeholder="Chon"
+                        >
+                            <option value="men">Nam</option>
+                            <option value="woman">Nữ</option>
+                            <option value="others">Khác</option>
+                        </select>
+                        <label
+                        >Giới tính<span class="required-icon">(*)</span></label
+                        >
+                    </div>
+                    <div class="form-floating mt-3 mb-3">
+                        <select
+                                required
+                                class="form-control"
+                                name="room_type"
+                                id="room_type"
+                                placeholder="Chon"
+                        >
+                            <option value="Phổ thông">Phòng phổ thông</option>
+                            <option value="Thương gia">Phòng thương gia</option>
+                            <option value="Phòng V.I.P">Phòng V.I.P</option>
+                        </select>
+                        <label for="room_type"
+                        >Loại phòng<span class="required-icon">(*)</span></label
+                        >
+                    </div>
+                    <div class="form-floating mt-3 mb-3">
+                        <input  required
+                                id="address"
+                                type="text"
+                                class="form-control"
+                                name="address"
+                                placeholder="Nhập địa chỉ"
+                        />
+                        <label for="address">Địa chỉ</label>
+                    </div>
+                </div>
+                <div class="col col-lg-8">
+                    <div class="form-floating mt-3 mb-3">
+                        <input
+                                required
+                                type="date"
+                                class="form-control"
+                                name="start_booking"
+                        />
+                        <label for="book-date"
+                        >Ngày đặt phòng<span class="required-icon">(*)</span></label
+                        >
+                    </div>
+                </div>
+                <div class="col col-lg-8">
+                    <div class="form-floating mt-3 mb-3">
+                        <input
+                                id="book-date"
+                                required
+                                type="date"
+                                class="form-control"
+                                name="end_booking"
+                        />
+                        <label for="book-date"
+                        >Ngày trả phòng<span class="required-icon">(*)</span></label
+                        >
+                    </div>
+                </div>
+
+                <div class="row justify-content-lg-center">
+                    <div class="col col-lg-3">
+                        <div class="form-floating mb-3 mt-3">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer_name"
+                                    placeholder="Nhập họ tên"
+                            />
+                            <label for="name"
+                            >Họ tên<span class="required-icon">(*)</span></label
+                            >
+                        </div>
+                    </div>
+                    <div class="col col-lg-3">
+                        <div class="form-floating mt-3 mb-3">
+                            <select name="customer_country" class="form-control">
+                                <option value="Viet Nam">Viet Nam</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <label>Quốc tịch</label>
+                        </div>
+                    </div>
+                    <div class="col col-lg-3">
+                        <div class="form-floating mt-3 mb-3">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer_cccd"
+                                    placeholder="Nhập số CCCD"
+                            />
+                            <label
+                            >CCCD<span class="required-icon">(*)</span></label
+                            >
+                        </div>
+                    </div>
+                    <div class="col col-lg-3">
+                        <div class="form-floating mt-3 mb-3">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer_address"
+                                    placeholder="Địa chỉ"
+                            />
+                            <label
+                            >Địa chỉ<span class="required-icon">(*)</span></label
+                            >
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-lg-center">
+                    <div class="col col-lg-3">
+                        <div class="form-floating mb-3 mt-3">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer_name"
+                                    placeholder="Nhập họ tên"
+                            />
+                            <label
+                            >Họ tên<span class="required-icon">(*)</span></label
+                            >
+                        </div>
+                    </div>
+                    <div class="col col-lg-3">
+                        <div class="form-floating mt-3 mb-3">
+                            <select name="customer_country" class="form-control">
+                                <option value="Viet Nam">Viet Nam</option>
+                                <option value="Others">Others</option>
+                            </select>
+                            <label>Quốc tịch</label>
+                        </div>
+                    </div>
+                    <div class="col col-lg-3">
+                        <div class="form-floating mt-3 mb-3">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer_cccd"
+                                    placeholder="Nhập số điện thoại"
+                            />
+                            <label for="phone"
+                            >CCCD<span class="required-icon">(*)</span></label
+                            >
+                        </div>
+                    </div>
+                    <div class="col col-lg-3">
+                        <div class="form-floating mt-3 mb-3">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer_address"
+                                    placeholder="Địa chỉ"
+                            />
+                            <label for="phone"
+                            >Địa chỉ<span class="required-icon">(*)</span></label
+                            >
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col col-lg-8">
+                    <div class="form-group mb-3 mt-3">
+                        <label for="favor">Những ghi chú của bạn?</label>
+                        <textarea
+                                class="form-control"
+                                id="favor"
+                                rows="3"
+                                name="favor"
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-floating mt-3 mb-3 btn-wrapper">
+                <input type="submit" class="btn btn-danger btn-icon" value="Đặt lịch"/>
+            </div>
+        </div>
+    </form>
 </div>
 {% endblock %}

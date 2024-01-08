@@ -177,10 +177,11 @@ def lapphieuthuephong():
     customers_type = request.form.getlist('customer_type')
     customers_cccd = request.form.getlist('customer_cccd')
     customers_address = request.form.getlist('customer_address')
-    phieudatphong_id = int(request.form.get('phieudatphong_id'))
+    phieudatphong_id = request.form.get('phieudatphong_id')
+    unit = dao.get_unit_by_unit_name(dvtt)
 
     if phieudatphong_id:
-        unit = dao.get_unit_by_unit_name(dvtt)
+        phieudatphong_id = int(phieudatphong_id)
         phieudatphong = dao.get_phieudatphong_by_id(phieudatphong_id)
         phieuthuephong = PhieuThuePhong(ngaybatdau=start, ngayketthuc=end, khachhang_id=phieudatphong.khachhang_id)
         db.session.add(phieuthuephong)
@@ -210,6 +211,44 @@ def lapphieuthuephong():
                     khachhang.loaikhachhang_id = loaikhachhang.id
                     db.session.add(khachhang)
                     db.session.commit()
+    else:
+        phieuthuephong = None
+        for i in range(len(customers_name)):
+            if i == 0 and customers_name[i]:
+                if customers_cccd[i]:
+                    khachhang = dao.get_KhachHang_by_cccd(customers_cccd[i])
+                    if not khachhang:
+                        loaikhachhang = dao.get_LoaiKhachHang_by_tenLoaiKhachHang(customers_type[i])
+                        khachhang = KhachHang(tenkhachhang=customers_name[i], cccd=customers_cccd[i],
+                                              loaikhachhang_id=loaikhachhang.id)
+                        db.session.add(khachhang)
+                        db.session.commit()
+                    phieuthuephong = PhieuThuePhong(ngaybatdau=start, ngayketthuc=end,
+                                                    khachhang_id=khachhang.id)
+                    db.session.add(phieuthuephong)
+                    db.session.commit()
+            elif i != 0 and customers_name[i]:
+                khachhang = None
+                if customers_cccd[i]:
+                    khachhang = dao.get_KhachHang_by_cccd(customers_cccd[i])
+                if not khachhang:
+                    loaikhachhang = dao.get_LoaiKhachHang_by_tenLoaiKhachHang(customers_type[i])
+                    khachhang = KhachHang(tenkhachhang=customers_name[i], loaikhachhang_id=loaikhachhang.id)
+                    db.session.add(khachhang)
+                    db.session.commit()
+                dsphieuthuephong = DsPhieuThuePhong(phieuthuephong_id=phieuthuephong.id, khachhang_id=khachhang.id)
+                db.session.add(dsphieuthuephong)
+                db.session.commit()
+
+        for i in range(len(rooms_ordered)):
+            room = dao.get_phong_by_tenphong(rooms_ordered[i])
+            loaiphong_donvitinhtien = dao.get_phong_donvitinhtien_by_2id(room.loaiphong_id, unit.id)
+
+            dsphongdathue = DsPhongDaThue(phong_id=room.id,
+                                          loaiphong_donvitinhtien_id=loaiphong_donvitinhtien.id,
+                                          phieuthuephong_id=phieuthuephong.id)
+            db.session.add(dsphongdathue)
+            db.session.commit()
 
     phong_available = dao.get_phong_available_by_tinhtrang()
     phong_unavailable = dao.get_phong_unavailable_by_tinhtrang()
