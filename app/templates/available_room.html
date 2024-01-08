@@ -1,45 +1,50 @@
-{% extends 'layout/base.html' %} {% block title %}Booking{% endblock %} {% block
+{% extends 'layout/base.html' %} {% block title %}Available room{% endblock %} {% block
 content %}
 
+<div class=“container”>
+    <div class=“row">
+        {% for a in phong_available %}
+        <div class="col col-md-6 col-lg-4">
 
-<div class="col-md-6 col-lg-4 mb-5 col-lg-4">
-    {% for a in phong_available %}
-    <div class="hotel-room text-center border border-dark">
-        <a href="#" class="d-block mb-0 thumbnail"
-        ><img src="{{a.hinhanh}}" alt="Image" class="img-fluid"
-        /></a>
-        <div class="hotel-room-body">
-            <h3 class="heading mb-0"><a href="#">{{a.tenphong}}</a></h3>
-            <span class="desc-img-room"
-            >{{ a.ghichu }}</span
-            >
-            {% for i in range(length) %}
-            <strong style="display: block" class="price">1/{{ lp_arr[i] }}/{{ dv_arr[i]}}/{{price_arr[i]}}</strong>
-            {% endfor %}
+            <div class="hotel-room text-center border border-dark">
+                <a href="#" class="d-block mb-0 thumbnail"
+                ><img src="{{a.hinhanh}}" alt="Image" class="img-fluid"
+                /></a>
+                <div class="hotel-room-body">
+                    <h3 class="heading mb-0"><a href="#">{{a.tenphong}}</a></h3>
+                    <span class="desc-img-room"
+                    >{{ a.ghichu }}</span
+                    >
+                    {% for i in range(length) %}
+                    <strong style="display: block" class="price">1/{{ lp_arr[i] }}/{{
+                        dv_arr[i]}}/{{price_arr[i]}}</strong>
+                    {% endfor %}
+                </div>
+                <form action="/dat-phong/lap-phieu-dat-phong" method="POST">
+                    <!--            truyền dữ liệu ẩn qua thẻ input dạng hidden-->
+                    <input type="hidden" name="available_room_id" value="{{a.id}}">
+                    <input type="hidden" name="customer_order_id" value="{{customer_order.id}}">
+                    <input type="hidden" name="start" value="{{start}}">
+                    <input type="hidden" name="end" value="{{end}}">
+                    <input type="hidden" name="favor" value="{{favor}}">
+                    <input type="hidden" name="dvtt" value="{{dv_arr[0]}}">
+                    <input type="hidden" name="lp" value="{{lp_arr[0]}}">
+                    <input type="hidden" name="customers_id_arr" value="{{customers_id_arr}}">
+                    <input type="hidden" name="lp_arr" value="{{lp_arr}}">
+                    <input type="hidden" name="dv_arr" value="{{dv_arr}}">
+                    <input type="hidden" name="price_arr" value="{{price_arr}}">
+                    {% if phieudatphong %}
+                    <input type="hidden" name="phieudatphong_id" value="{{phieudatphong.id}}">
+                    {% endif %}
+                    <div style="display: flex;justify-content: center;align-items: center">
+                        <button type="submit">Đặt phòng</button>
+                    </div>
+                </form>
+            </div>
+
         </div>
-        <form action="/dat-phong/lap-phieu-dat-phong" method="POST">
-<!--            truyền dữ liệu ẩn qua thẻ input dạng hidden-->
-            <input type="hidden" name="available_room_id" value="{{a.id}}">
-            <input type="hidden" name="customer_order_id" value="{{customer_order.id}}">
-            <input type="hidden" name="start" value="{{start}}">
-            <input type="hidden" name="end" value="{{end}}">
-            <input type="hidden" name="favor" value="{{favor}}">
-            <input type="hidden" name="dvtt" value="{{dv_arr[0]}}">
-            <input type="hidden" name="lp" value="{{lp_arr[0]}}">
-            <input type="hidden" name="customers_id_arr" value="{{customers_id_arr}}">
-            <input type="hidden" name="lp_arr" value="{{lp_arr}}">
-            <input type="hidden" name="dv_arr" value="{{dv_arr}}">
-            <input type="hidden" name="price_arr" value="{{price_arr}}">
-            {% if phieudatphong %}
-            <input type="hidden" name="phieudatphong_id" value="{{phieudatphong.id}}">
-            {% endif %}
-            <div style="display: flex;justify-content: center;align-items: center"><button type="submit">Đặt phòng</button></div>
-        </form>
+        {% endfor %}
+         <div><a href="/">Trở về trang chủ</a></div>
     </div>
-
-    {% endfor %}
-
-    <div><a href="/">Trở về trang chủ</a></div>
-
 </div>
 {% endblock %}

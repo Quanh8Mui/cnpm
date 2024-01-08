@@ -27,8 +27,14 @@ def load_nguoiquantri(id):
 
 @app.route("/")
 def home():
-    continue_order = False
-    return render_template("index.html")
+    rooms = []
+    room1 = dao.get_phong_by_id(1)
+    room2 = dao.get_phong_by_id(21)
+    room3 = dao.get_phong_by_id(31)
+    rooms.append(room1)
+    rooms.append(room2)
+    rooms.append(room3)
+    return render_template("index.html", rooms=rooms)
 
 
 @app.route('/admin/login', methods=['POST'])

@@ -4,7 +4,7 @@ from flask import redirect, flash, url_for, render_template, request
 from app import app, db, dao
 from app.models import (KhachHang, LoaiKhachHang, Phong, LoaiPhong, PhieuThuePhong, LoaiPhong_DonVitinhTien,
                         DonViTinhTien, UserRoleEnum, NguoiQuanTri, PhieuDanhGia, ThongSoQuyDinh, NhuCau,
-                        DsPhieuDatPhong, PhieuDatPhong, DsPhongDaDat)
+                        DsPhieuDatPhong, PhieuDatPhong, DsPhongDaDat, HoaDon)
 from flask_admin.contrib.sqla import ModelView
 from datetime import datetime
 
@@ -48,6 +48,9 @@ class AuthenticatedNhanVienPhieuDatPhong(ModelView):
 
     column_list = ['khachhang.tenkhachhang', 'ngaybatdau', 'ngayketthuc', 'khachhang.cccd',
                    'dscacphongdadat.phong_id', 'dsphieudatphong.khachhang_id']
+    column_labels = {'khachhang.tenkhachhang': 'Tên khách hàng', 'dskb_lichkham': 'Lịch khám', 'benhnhan_name': 'Họ tên',
+                     'chitietbenhnhan_gioitinh': 'Giới tính'
+        , 'chitietbenhnhan_ngaysinh': 'Năm sinh', 'chitietbenhnhan_diachi': 'Địa chỉ'}  # Đổi tên trường
     column_searchable_list = ('khachhang.tenkhachhang', 'khachhang.cccd')
 
     def phongid_formatter(self, context, model, name):
@@ -99,6 +102,12 @@ class AuthenticatedNhanVienLapPhieuThuePhong(BaseView):
 class LapPhieuThuePhongView(AuthenticatedNhanVienLapPhieuThuePhong):
     pass
 
+class AuthenticatedNhanVienHoaDon(ModelView):
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.user_role == UserRoleEnum.NHAN_VIEN
+
+class HoaDonView(AuthenticatedNhanVienHoaDon):
+    pass
 
 class MyLogoutView(AuthenticatedUser):
     @expose("/")
@@ -110,4 +119,5 @@ class MyLogoutView(AuthenticatedUser):
 admin.add_view(NguoiQuanTriView(NguoiQuanTri, db.session, name="Quản lí nhân sự"))
 admin.add_view(PhieuDatPhongView(PhieuDatPhong, db.session, name="Tra cứu lịch đặt phòng"))
 admin.add_view(LapPhieuThuePhongView(name='Lập phiếu thuê phòng', endpoint='lapphieuthuephong'))
+admin.add_view(HoaDonView(HoaDon, db.session, name="Hóa đơn thanh toán"))
 admin.add_view(MyLogoutView(name='Đăng xuất'))
