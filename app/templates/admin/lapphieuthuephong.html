@@ -28,7 +28,7 @@
 
 <div>
   <h1 class="text-center text-success mt-4 mb-4">LẬP PHIẾU THUÊ PHÒNG</h1>
-  <form method="post" action="/register-process">
+  <form method="post" action="/admin/lapphieuthuephong">
 
     <div class="form-floating mt-3 mb-3">
       <input
@@ -50,6 +50,20 @@
       />
       <label for="book-date">Ngày trả phòng</label>
     </div>
+
+    <div class="col col-lg-3">
+             <label>Các phòng còn trống</label>
+            <select required class="form-control" name="rooms" id="mySelect" onchange="addToMyArray()">
+              {% for i in range(length) %}
+                    <option value="{{ phong_available[i].tenphong }}">{{ phong_available[i].tenphong }}</option>
+              {% endfor %}
+            </select>
+
+    </div>
+
+    <h4 style="color: red;  margin-top: 10px">Các phòng cho thuê : </h4>
+
+    <div id="myDiv" class="border border-dark"></div>
 
     <div class="container-fluid mt-5 border">
       <div class="row justify-content-lg-center">
@@ -105,15 +119,6 @@
             <label>Địa chỉ<span class="required-icon">(*)</span></label>
           </div>
         </div>
-        <div class="col col-lg-3">
-             <label>Các phòng còn trống</label>
-            <select required class="form-control" name="rooms">
-              {% for i in range(length) %}
-                    <option value="{{ phong_available[i].tenphong }}">{{ phong_available[i].tenphong }}</option>
-              {% endfor %}
-            </select>
-
-        </div>
       </div>
       <div class="row justify-content-lg-center">
         <div class="col col-lg-2">
@@ -169,15 +174,7 @@
             <label>Địa chỉ<span class="required-icon">(*)</span></label>
           </div>
         </div>
-        <div class="col col-lg-3">
-             <label>Các phòng còn trống</label>
-            <select required class="form-control" name="rooms">
-              {% for i in range(length) %}
-                    <option value="{{ phong_available[i].tenphong }}">{{ phong_available[i].tenphong }}</option>
-              {% endfor %}
-            </select>
 
-        </div>
       </div>
       <div class="row justify-content-lg-center">
         <div class="col col-lg-2">
@@ -229,15 +226,6 @@
             />
             <label>Địa chỉ<span class="required-icon">(*)</span></label>
           </div>
-        </div>
-        <div class="col col-lg-3">
-             <label>Các phòng còn trống</label>
-            <select required class="form-control" name="rooms">
-              {% for i in range(length) %}
-                    <option value="{{ phong_available[i].tenphong }}">{{ phong_available[i].tenphong }}</option>
-              {% endfor %}
-            </select>
-
         </div>
       </div>
     </div>

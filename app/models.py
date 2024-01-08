@@ -29,11 +29,12 @@ class KhachHang(db.Model):
     loaikhachhang_id = db.Column(Integer, ForeignKey(LoaiKhachHang.id), nullable=False)
     loaikhachhang = db.relationship('LoaiKhachHang', backref='loaikhachhangBackrefkhachhang')
     phieudanhgia = db.relationship('PhieuDanhGia', backref='phieudanhgiaBackrefkhachhang')
-    phieuthuephong = db.relationship('PhieuThuePhong',
-                                     backref=' phieuthuephongBackrefKhachHang')
+    # phieuthuephong = db.relationship('PhieuThuePhong',
+    #                                  backref=' phieuthuephongBackrefKhachHang')
     # phieudatphong = db.relationship('PhieuDatPhong',
     #                                 backref=' phieudatphongBackrefKhachHang')
     dsphieudatphong = db.relationship('DsPhieuDatPhong', backref='DsPhieuDatPhongBackrefKhachHang')
+    dsphieudatphong2 = db.relationship('DsPhieuDatPhong2', backref='DsPhieuThuePhong2BackrefKhachHang')
 
 
 class NguoiQuanTri(db.Model, UserMixin):
@@ -69,6 +70,7 @@ class Phong(db.Model):
     phieudanhgia = db.relationship('PhieuDanhGia',
                                    backref=' phieudanhgiaBackrefLoaiPhong')
     dscacphongdadat = db.relationship('DsPhongDaDat', backref='dscacphongdadatBackrefPhong')
+    dscacphongdadat2 = db.relationship('DsPhongDaDat2', backref='dscacphongdadat2BackrefPhong')
 
 
 class DonViTinhTien(db.Model):
@@ -83,9 +85,8 @@ class LoaiPhong_DonVitinhTien(db.Model):
     loaiphong_id = db.Column(Integer, ForeignKey(LoaiPhong.id), nullable=False)
     donvitinhtien_id = db.Column(Integer, ForeignKey(DonViTinhTien.id), nullable=False)
     giatien = db.Column(Float, nullable=False)
-    phieuthuephong = db.relationship('PhieuThuePhong',
-                                     backref='phieuthuephongBackrefLoaiPhong_DonVitinhTien')
     dsphongdadat = db.relationship('DsPhongDaDat', backref='dsphongdadatBackrefLoaiPhong_DonVitinhTien')
+    dscacphongdadat2 = db.relationship('DsPhongDaDat2', backref='dscacphongdadat2BackrefLoaiPhong_DonVitinhTien')
 
 
 class PhieuDatPhong(db.Model):
@@ -115,8 +116,23 @@ class PhieuThuePhong(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     ngaybatdau = Column(DateTime, nullable=False)
     ngayketthuc = Column(DateTime, nullable=False)
-    loaiphong_donvitinhtien_id = db.Column(Integer, ForeignKey(LoaiPhong_DonVitinhTien.id), nullable=False)
+    dsphieudatphong2 = db.relationship('DsPhieuDatPhong2', backref='DsPhieuDatPhong2BackrefPhieuThuePhong')
+    dscacphongdadat2 = db.relationship('DsPhongDaDat2', backref='dscacphongdadat2BackrefPhieuThuePhong')
+    khachhang = db.relationship('KhachHang', backref='khachhangBackrefPhieuThuePhong')
     khachhang_id = db.Column(Integer, ForeignKey(KhachHang.id), nullable=False)
+
+
+class DsPhieuDatPhong2(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    khachhang_id = db.Column(Integer, ForeignKey(KhachHang.id), nullable=False)
+    phieuthuephong_id = db.Column(Integer, ForeignKey(PhieuThuePhong.id), nullable=False)
+
+
+class DsPhongDaDat2(db.Model):
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    phong_id = db.Column(Integer, ForeignKey(Phong.id), nullable=False)
+    loaiphong_donvitinhtien_id = db.Column(Integer, ForeignKey(LoaiPhong_DonVitinhTien.id), nullable=False)
+    phieuthuephong_id = db.Column(Integer, ForeignKey(PhieuThuePhong.id), nullable=False)
 
 
 class PhieuDanhGia(db.Model):

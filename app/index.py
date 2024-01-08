@@ -168,7 +168,19 @@ def lapphieudatphong():
 
 @app.route("/admin/lapphieuthuephong", methods=['GET'])
 @login_required
+def formlapphieuthuephong():
+    return render_template("admin/lapphieuthuephong.html")
+
+
+@app.route("/admin/lapphieuthuephong", methods=['POST'])
+@login_required
 def lapphieuthuephong():
+    start = request.form.get('start_booking')
+    end = request.form.get('end_booking')
+    rooms_ordered = request.form.getlist('rooms_ordered')
+    # if rooms_ordered:
+
+
     return render_template("admin/lapphieuthuephong.html")
 
 
