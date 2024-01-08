@@ -12,6 +12,8 @@ import cloudinary.uploader
 from admin import *
 
 import cloudinary
+today = datetime.now().strftime('%Y-%m-%d')
+
 
 cloudinary.config(
     cloud_name="ds7ikpaeh",
@@ -255,6 +257,7 @@ def lapphieuthuephong():
                                           phieuthuephong_id=phieuthuephong.id)
             db.session.add(dsphongdathue)
             db.session.commit()
+
 
     phong_available = dao.get_phong_available_by_tinhtrang()
     phong_unavailable = dao.get_phong_unavailable_by_tinhtrang()

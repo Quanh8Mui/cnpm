@@ -1,6 +1,6 @@
 from app.models import (KhachHang, LoaiKhachHang, Phong, LoaiPhong, PhieuThuePhong, LoaiPhong_DonVitinhTien,
                         DonViTinhTien, UserRoleEnum, NguoiQuanTri, PhieuDanhGia, ThongSoQuyDinh, NhuCau, DsPhongDaDat,
-                        PhieuDatPhong, DsPhieuDatPhong)
+                        PhieuDatPhong, DsPhieuDatPhong, DsPhongDaThue, DsPhieuThuePhong)
 import hashlib
 
 
@@ -26,6 +26,10 @@ def get_NguoiQuanTri_by_id(id):
 
 def get_phieudatphong_by_id(id):
     return PhieuDatPhong.query.get(id)
+
+
+def get_loaiphong_donvitinhtien_by_id(id):
+    return LoaiPhong_DonVitinhTien.query.get(id)
 
 
 def get_KhachHang_by_tenkhachhang(tenkhachhang):
@@ -154,6 +158,22 @@ def get_dspdd_by_phieu_dat_phong_id(id):
         dspdd = dspdd.filter_by(phieudatphong_id=id).all()
 
     return dspdd
+
+
+def get_dspdt_by_phieu_thue_phong_id(id):
+    dspdt = DsPhongDaThue.query
+    if id:
+        dspdt = dspdt.filter_by(phieuthuephong_id=id).all()
+
+    return dspdt
+
+
+def get_dsptp_by_phieu_thue_phong_id(id):
+    dsptp = DsPhieuThuePhong.query
+    if id:
+        dsptp = dsptp.filter_by(phieuthuephong_id=id).all()
+
+    return dsptp
 
 
 def get_dspdp_by_phieu_dat_phong_id(id):

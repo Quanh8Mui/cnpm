@@ -48,9 +48,10 @@ class AuthenticatedNhanVienPhieuDatPhong(ModelView):
 
     column_list = ['khachhang.tenkhachhang', 'ngaybatdau', 'ngayketthuc', 'khachhang.cccd',
                    'dscacphongdadat.phong_id', 'dsphieudatphong.khachhang_id']
-    column_labels = {'khachhang.tenkhachhang': 'Tên khách hàng', 'dskb_lichkham': 'Lịch khám', 'benhnhan_name': 'Họ tên',
+    column_labels = {'khachhang.tenkhachhang': 'Tên khách hàng', 'dskb_lichkham': 'Lịch khám',
+                     'benhnhan_name': 'Họ tên',
                      'chitietbenhnhan_gioitinh': 'Giới tính'
-        , 'chitietbenhnhan_ngaysinh': 'Năm sinh', 'chitietbenhnhan_diachi': 'Địa chỉ'}  # Đổi tên trường
+        , 'chitietbenhnhan_ngaysinh': 'Năm sinh', 'chitietbenhnhan_diachi': 'Địa chỉ'}
     column_searchable_list = ('khachhang.tenkhachhang', 'khachhang.cccd')
 
     def phongid_formatter(self, context, model, name):
@@ -102,12 +103,18 @@ class AuthenticatedNhanVienLapPhieuThuePhong(BaseView):
 class LapPhieuThuePhongView(AuthenticatedNhanVienLapPhieuThuePhong):
     pass
 
+
 class AuthenticatedNhanVienHoaDon(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.user_role == UserRoleEnum.NHAN_VIEN
 
+    # column_list = ['']
+    # column_labels = {}
+
+
 class HoaDonView(AuthenticatedNhanVienHoaDon):
     pass
+
 
 class MyLogoutView(AuthenticatedUser):
     @expose("/")
