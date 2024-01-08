@@ -28,6 +28,24 @@ def get_phieudatphong_by_id(id):
     return PhieuDatPhong.query.get(id)
 
 
+def get_KhachHang_by_tenkhachhang(tenkhachhang):
+    khachhang = KhachHang.query
+
+    if tenkhachhang:
+        khachhang = khachhang.filter_by(tenkhachhang=tenkhachhang).first()
+
+    return khachhang
+
+
+def get_KhachHang_by_cccd(cccd):
+    khachhang = KhachHang.query
+
+    if cccd:
+        khachhang = khachhang.filter_by(cccd=cccd).first()
+
+    return khachhang
+
+
 def get_LoaiKhachHang_by_tenLoaiKhachHang(ten):
     loaikhachhang = LoaiKhachHang.query
 
@@ -54,6 +72,14 @@ def get_phong_by_loaiphong_id(id):
     return phong
 
 
+def get_phong_by_tenphong(ten):
+    phong = Phong.query
+    if ten:
+        phong = phong.filter_by(tenphong=ten).first()
+
+    return phong
+
+
 def get_phong_available_by_loaiphong_id(id):
     phong = Phong.query
     if id:
@@ -63,11 +89,11 @@ def get_phong_available_by_loaiphong_id(id):
 
 
 def get_phong_available_by_tinhtrang():
-    phong = Phong.query
-    if id:
-        phong = phong.filter_by(tinhtrang=False).all()
+    return Phong.query.filter_by(tinhtrang=False).all()
 
-    return phong
+
+def get_phong_unavailable_by_tinhtrang():
+    return Phong.query.filter_by(tinhtrang=True).all()
 
 
 def get_donvitinhtien_by_ten(ten):
@@ -94,6 +120,14 @@ def get_phong_donvitinhtien_by_loaiphong_id(id):
     phong_dvtt = LoaiPhong_DonVitinhTien.query
     if id:
         phong_dvtt = phong_dvtt.filter_by(loaiphong_id=id).all()
+
+    return phong_dvtt
+
+
+def get_phong_donvitinhtien_by_2id(id1, id2):
+    phong_dvtt = LoaiPhong_DonVitinhTien.query
+    if id1 and id2:
+        phong_dvtt = phong_dvtt.filter_by(loaiphong_id=id1, donvitinhtien_id=id2).first()
 
     return phong_dvtt
 
@@ -126,6 +160,14 @@ def get_dspdp_by_phieu_dat_phong_id(id):
     dspdp = DsPhieuDatPhong.query
     if id:
         dspdp = dspdp.filter_by(phieudatphong_id=id).all()
+
+    return dspdp
+
+
+def get_dspdp_by_2id(id1, id2):
+    dspdp = DsPhieuDatPhong.query
+    if id1 and id2:
+        dspdp = dspdp.filter_by(phieudatphong_id=id1, khachhang_id=id2).all()
 
     return dspdp
 

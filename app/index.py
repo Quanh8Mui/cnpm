@@ -5,7 +5,7 @@ import json, hmac, hashlib, requests
 import uuid
 from app.models import (KhachHang, LoaiKhachHang, Phong, LoaiPhong, PhieuThuePhong, LoaiPhong_DonVitinhTien,
                         DonViTinhTien, UserRoleEnum, NguoiQuanTri, PhieuDanhGia, ThongSoQuyDinh, NhuCau,
-                        DsPhieuDatPhong, PhieuDatPhong, DsPhongDaDat)
+                        DsPhieuDatPhong, PhieuDatPhong, DsPhongDaDat, DsPhieuThuePhong, DsPhongDaThue)
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import cloudinary
 import cloudinary.uploader
@@ -57,10 +57,6 @@ def booking_room():
     favor = request.form.get('favor')
 
     loaikhachhang = dao.get_LoaiKhachHang_by_tenLoaiKhachHang(country)
-    if not loaikhachhang:
-        loaikhachhang = LoaiKhachHang(tenloaikhachhang=country)
-        db.session.add(loaikhachhang)
-        db.session.commit()
 
     customer_order = KhachHang(tenkhachhang=name, sdt=phone, gioitinh=gender, cccd=cccd, diachi=address,
                                loaikhachhang_id=loaikhachhang.id)
@@ -77,10 +73,6 @@ def booking_room():
     for i in range(len(customers_name)):
         if customers_name[i] != '':
             loaikhachhang = dao.get_LoaiKhachHang_by_tenLoaiKhachHang(customers_country[i])
-            if not loaikhachhang:
-                loaikhachhang = LoaiKhachHang(tenloaikhachhang=country)
-                db.session.add(loaikhachhang)
-                db.session.commit()
             khachhang = KhachHang()
             khachhang.loaikhachhang_id = loaikhachhang.id
             khachhang.tenkhachhang = customers_name[i]
@@ -160,6 +152,8 @@ def lapphieudatphong():
             db.session.add(favor_dao)
             db.session.commit()
 
+    customers_id_arr = []
+
     return render_template("available_room.html", phong_available=phong_available,
                            loaiphong_donvitinhtien=loaiphong_donvitinhtien, customer_order=customer_order
                            , flag='success', lp_arr=lp_arr, dv_arr=dv_arr, length=3, price_arr=price_arr,
@@ -177,11 +171,53 @@ def formlapphieuthuephong():
 def lapphieuthuephong():
     start = request.form.get('start_booking')
     end = request.form.get('end_booking')
+    dvtt = request.form.get('dvtt')
     rooms_ordered = request.form.getlist('rooms_ordered')
-    # if rooms_ordered:
+    customers_name = request.form.getlist('customer_name')
+    customers_type = request.form.getlist('customer_type')
+    customers_cccd = request.form.getlist('customer_cccd')
+    customers_address = request.form.getlist('customer_address')
+    phieudatphong_id = int(request.form.get('phieudatphong_id'))
 
+    if phieudatphong_id:
+        unit = dao.get_unit_by_unit_name(dvtt)
+        phieudatphong = dao.get_phieudatphong_by_id(phieudatphong_id)
+        phieuthuephong = PhieuThuePhong(ngaybatdau=start, ngayketthuc=end, khachhang_id=phieudatphong.khachhang_id)
+        db.session.add(phieuthuephong)
+        db.session.commit()
 
-    return render_template("admin/lapphieuthuephong.html")
+        for i in range(len(rooms_ordered)):
+            room = dao.get_phong_by_tenphong(rooms_ordered[i])
+            loaiphong_donvitinhtien = dao.get_phong_donvitinhtien_by_2id(room.loaiphong_id, unit.id)
+
+            dsphongdathue = DsPhongDaThue(phong_id=room.id, loaiphong_donvitinhtien_id=loaiphong_donvitinhtien.id,
+                                          phieuthuephong_id=phieuthuephong.id)
+            db.session.add(dsphongdathue)
+            db.session.commit()
+
+        for i in range(1, len(customers_name)):
+            if customers_name[i] != '':
+                khachhang = dao.get_KhachHang_by_tenkhachhang(customers_name[i])
+                loaikhachhang = dao.get_LoaiKhachHang_by_tenLoaiKhachHang(customers_type[i])
+                if khachhang:
+                    dsphieuthuephong = DsPhieuThuePhong(phieuthuephong_id=phieuthuephong.id, khachhang_id=khachhang.id)
+                    db.session.add(dsphieuthuephong)
+                    db.session.commit()
+                    if customers_cccd[i]:
+                        khachhang.cccd = customers_cccd[i]
+                    if customers_address[i]:
+                        khachhang.diachi = customers_address[i]
+                    khachhang.loaikhachhang_id = loaikhachhang.id
+                    db.session.add(khachhang)
+                    db.session.commit()
+
+    phong_available = dao.get_phong_available_by_tinhtrang()
+    phong_unavailable = dao.get_phong_unavailable_by_tinhtrang()
+    length1 = len(phong_available)
+    length2 = len(phong_unavailable)
+    flag = 'success'
+    return render_template('admin/lapphieuthuephong.html', phong_available=phong_available, length1=length1,
+                           length2=length2, phong_unavailable=phong_unavailable, flag=flag)
 
 
 if __name__ == '__main__':

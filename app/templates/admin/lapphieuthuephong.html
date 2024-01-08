@@ -3,236 +3,224 @@
 
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-<a class="nav-link" href="/admin">QUẢN TRỊ DANH SÁCH THUÊ PHÒNG</a>
+        <a class="nav-link" href="/admin">QUẢN TRỊ DANH SÁCH THUÊ PHÒNG</a>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/admin"
-          >Home</a
-        >
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/admin/phieudatphong">Tra cứu lịch đặt phòng</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#">Đăng kí thuê phòng</a>
-      </li>
-        <li class="nav-item">
-        <a class="nav-link" methods="POST" href="/logout_manager">Đăng xuất</a>
-      </li>
-    </ul>
-  </div>
-</nav>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/admin"
+                    >Home</a
+                    >
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/phieudatphong">Tra cứu lịch đặt phòng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Đăng kí thuê phòng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" methods="POST" href="/logout_manager">Đăng xuất</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
 </div>
 
 <div>
-  <h1 class="text-center text-success mt-4 mb-4">LẬP PHIẾU THUÊ PHÒNG</h1>
-  <form method="post" action="/admin/lapphieuthuephong">
+    <h1 class="text-center text-success mt-4 mb-4">LẬP PHIẾU THUÊ PHÒNG</h1>
+    {% if flag == 'success' %}
+    <h5 class="text-center text-success mt-4 mb-4">Lập phiếu thuê phòng thành công !</h5>
+    {% endif %}
+    <form method="post" action="/admin/lapphieuthuephong">
 
-    <div class="form-floating mt-3 mb-3">
-      <input
-        required
-        type="date"
-        class="form-control"
-        name="start_booking"
-        autocomplete="on"
-      />
-      <label for="book-date">Ngày nhận phòng</label>
-    </div>
-    <div class="form-floating mt-3 mb-3">
-      <input
-        id="book-date"
-        type="date"
-        class="form-control"
-        name="end_booking"
-        autocomplete="on"
-      />
-      <label for="book-date">Ngày trả phòng</label>
-    </div>
+        <div class="form-floating mt-3 mb-3">
+            <input
+                    type="text"
+                    class="form-control"
+                    name="phieudatphong_id"
+                    autocomplete="on"
+            />
+            <label for="book-date">Nhập mã phiếu đặt phòng trước (Nếu có)</label>
 
-    <div class="col col-lg-3">
-             <label>Các phòng còn trống</label>
-            <select required class="form-control" name="rooms" id="mySelect" onchange="addToMyArray()">
-              {% for i in range(length) %}
+            <div class="col col-lg-2">
+                <div class="form-floating mt-3 mb-3">
+                    <select
+                            class="form-control"
+                            id="dvtt"
+                            placeholder="Chon"
+                            name="dvtt"
+                    >
+                        <option value="Giờ">Giờ</option>
+                        <option value="Ngày">Ngày</option>
+                        <option value="Tuần">Tuần</option>
+
+                    </select>
+                    <label
+                    >Đặt theo : <span class="required-icon">(*)</span></label
+                    >
+                </div>
+            </div>
+
+            <div class="form-floating mt-3 mb-3">
+                <input
+                        required
+                        type="date"
+                        class="form-control"
+                        name="start_booking"
+                        autocomplete="on"
+                />
+                <label for="book-date">Ngày nhận phòng</label>
+            </div>
+            <div class="form-floating mt-3 mb-3">
+                <input
+                        id="book-date"
+                        type="date"
+                        class="form-control"
+                        name="end_booking"
+                        autocomplete="on"
+                />
+                <label for="book-date">Ngày trả phòng</label>
+            </div>
+
+            <div class="col col-lg-3">
+                <label>Các phòng còn trống</label>
+                <select required class="form-control" name="rooms" id="mySelect" onchange="addToMyArray()">
+                    <option value="default">Chọn phòng trống</option>
+
+                    {% for i in range(length1) %}
                     <option value="{{ phong_available[i].tenphong }}">{{ phong_available[i].tenphong }}</option>
-              {% endfor %}
-            </select>
+                    {% endfor %}
+                </select>
 
-    </div>
+            </div>
+            <div class="col col-lg-3">
+                <label>Các phòng đã đặt</label>
+                    <select required class="form-control" name="rooms" id="mySelect2" onchange="addToMyArray2()">
+                    <option value="default">Chọn phòng đã đặt</option>
+                    {% for i in range(length2) %}
+                    <option value="{{ phong_unavailable[i].tenphong }}">{{ phong_unavailable[i].tenphong }}</option>
+                    {% endfor %}
+                </select>
 
-    <h4 style="color: red;  margin-top: 10px">Các phòng cho thuê : </h4>
+            </div>
 
-    <div id="myDiv" class="border border-dark"></div>
+            <h4 style="color: red;  margin-top: 10px">Các phòng cho thuê : </h4>
 
-    <div class="container-fluid mt-5 border">
-      <div class="row justify-content-lg-center">
-        <div class="col col-lg-2">
-          <div class="form-floating mb-3 mt-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_name"
-              placeholder="Nhập họ tên"
-              autocomplete="on"
-            />
-            <label>Khách hàng</label>
-          </div>
-        </div>
-        <div class="col col-lg-2">
-          <div class="form-floating mt-3 mb-3">
-            <select
-              class="form-control"
-              name="customer_type"
-              id="type"
-              placeholder="Chon"
-            >
-              <option value="Viet Nam">Viet Nam</option>
-              <option value="Others">Khác</option>
-            </select>
-            <label
-              >Loại khách<span class="required-icon">(*)</span></label
-            >
-          </div>
-        </div>
-        <div class="col col-lg-2">
-          <div class="form-floating mb-3 mt-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_cccd"
-              id="cccd"
-              placeholder="Nhập số CCCD"
-            />
-            <label for="cccd">CCCD</label>
-          </div>
-        </div>
+            <div id="myDiv" class="border border-dark"></div>
 
-        <div class="col col-lg-3">
-          <div class="form-floating mb-3 mt-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_address"
-              placeholder="Nhập địa chỉ"
-            />
-            <label>Địa chỉ<span class="required-icon">(*)</span></label>
-          </div>
-        </div>
-      </div>
-      <div class="row justify-content-lg-center">
-        <div class="col col-lg-2">
-          <div class="form-floating mb-3 mt-3">
-            <input
-              type="text"
-              class="form-control"
-              required
-              name="customer_name"
-              placeholder="Nhập họ tên"
-              autocomplete="on"
-            />
-            <label>Khách hàng</label>
-          </div>
-        </div>
-        <div class="col col-lg-2">
-          <div class="form-floating mt-3 mb-3">
-            <select
-              required
-              class="form-control"
-              name="customer_type"
-              placeholder="Chon"
-            >
-              <option value="Viet Nam">Viet Nam</option>
-              <option value="Others">Khác</option>
-            </select>
-            <label
-              >Loại khách<span class="required-icon">(*)</span></label
-            >
-          </div>
-        </div>
-        <div class="col col-lg-2">
-          <div class="form-floating mb-3 mt-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_cccd"
-              placeholder="Nhập số CCCD"
-            />
-            <label for="cccd">CCCD</label>
-          </div>
-        </div>
+            <div class="container-fluid mt-5 border">
+                <div class="row justify-content-lg-center">
+                    <div class="col col-lg-2">
+                        <div class="form-floating mb-3 mt-3">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer_name"
+                                    placeholder="Nhập họ tên"
+                                    autocomplete="on"
+                            />
+                            <label>Khách hàng</label>
+                        </div>
+                    </div>
+                    <div class="col col-lg-2">
+                        <div class="form-floating mt-3 mb-3">
+                            <select
+                                    class="form-control"
+                                    name="customer_type"
+                                    id="type"
+                                    placeholder="Chon"
+                            >
+                                <option value="Viet Nam">Viet Nam</option>
+                                <option value="Others">Khác</option>
+                            </select>
+                            <label
+                            >Loại khách<span class="required-icon">(*)</span></label
+                            >
+                        </div>
+                    </div>
+                    <div class="col col-lg-2">
+                        <div class="form-floating mb-3 mt-3">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer_cccd"
+                                    id="cccd"
+                                    placeholder="Nhập số CCCD"
+                            />
+                            <label for="cccd">CCCD</label>
+                        </div>
+                    </div>
 
-        <div class="col col-lg-3">
-          <div class="form-floating mb-3 mt-3">
-            <input
-              type="text"
-              class="form-control"
-              required
-              name="customer_address"
-              placeholder="Nhập họ tên"
-            />
-            <label>Địa chỉ<span class="required-icon">(*)</span></label>
-          </div>
-        </div>
+                    <div class="col col-lg-3">
+                        <div class="form-floating mb-3 mt-3">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer_address"
+                                    placeholder="Nhập địa chỉ"
+                            />
+                            <label>Địa chỉ<span class="required-icon">(*)</span></label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row justify-content-lg-center">
+                    <div class="col col-lg-2">
+                        <div class="form-floating mb-3 mt-3">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer_name"
+                                    placeholder="Nhập họ tên"
+                                    autocomplete="on"
+                            />
+                            <label>Khách hàng</label>
+                        </div>
+                    </div>
+                    <div class="col col-lg-2">
+                        <div class="form-floating mt-3 mb-3">
+                            <select
+                                    class="form-control"
+                                    name="customer_type"
+                                    placeholder="Chon"
+                            >
+                                <option value="Viet Nam">Viet Nam</option>
+                                <option value="Others">Khác</option>
+                            </select>
+                            <label
+                            >Loại khách<span class="required-icon">(*)</span></label
+                            >
+                        </div>
+                    </div>
+                    <div class="col col-lg-2">
+                        <div class="form-floating mb-3 mt-3">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer_cccd"
+                                    placeholder="Nhập số CCCD"
+                            />
+                            <label for="cccd">CCCD</label>
+                        </div>
+                    </div>
 
-      </div>
-      <div class="row justify-content-lg-center">
-        <div class="col col-lg-2">
-          <div class="form-floating mb-3 mt-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_name"
-              placeholder="Nhập họ tên"
-              autocomplete="on"
-            />
-            <label>Khách hàng</label>
-          </div>
-        </div>
-        <div class="col col-lg-2">
-          <div class="form-floating mt-3 mb-3">
-            <select
-              class="form-control"
-              name="customer_type"
-              placeholder="Chon"
-            >
-              <option value="Viet Nam">Viet Nam</option>
-              <option value="Others">Khác</option>
-            </select>
-            <label
-              >Loại khách<span class="required-icon">(*)</span></label
-            >
-          </div>
-        </div>
-        <div class="col col-lg-2">
-          <div class="form-floating mb-3 mt-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_cccd"
-              placeholder="Nhập số CCCD"
-            />
-            <label for="cccd">CCCD</label>
-          </div>
-        </div>
+                    <div class="col col-lg-3">
+                        <div class="form-floating mb-3 mt-3">
+                            <input
+                                    type="text"
+                                    class="form-control"
+                                    name="customer_address"
+                                    placeholder="Nhập họ tên"
+                            />
+                            <label>Địa chỉ<span class="required-icon">(*)</span></label>
+                        </div>
+                    </div>
 
-        <div class="col col-lg-3">
-          <div class="form-floating mb-3 mt-3">
-            <input
-              type="text"
-              class="form-control"
-              name="customer_address"
-              placeholder="Nhập họ tên"
-            />
-            <label>Địa chỉ<span class="required-icon">(*)</span></label>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="form-floating mb-5 mt-4 btn-wrapper">
-      <input type="submit" class="btn btn-danger btn-icon" value="Lập phiếu" />
-    </div>
-  </form>
+                </div>
+            </div>
+            <div class="form-floating mb-5 mt-4 btn-wrapper">
+                <input type="submit" class="btn btn-danger btn-icon" value="Lập phiếu"/>
+            </div>
+    </form>
 </div>
 
 {% endblock %}

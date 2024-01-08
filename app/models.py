@@ -34,7 +34,7 @@ class KhachHang(db.Model):
     # phieudatphong = db.relationship('PhieuDatPhong',
     #                                 backref=' phieudatphongBackrefKhachHang')
     dsphieudatphong = db.relationship('DsPhieuDatPhong', backref='DsPhieuDatPhongBackrefKhachHang')
-    dsphieudatphong2 = db.relationship('DsPhieuDatPhong2', backref='DsPhieuThuePhong2BackrefKhachHang')
+    dsphieuthuephong = db.relationship('DsPhieuThuePhong', backref='DsPhieuThuePhongBackrefKhachHang')
 
 
 class NguoiQuanTri(db.Model, UserMixin):
@@ -70,7 +70,7 @@ class Phong(db.Model):
     phieudanhgia = db.relationship('PhieuDanhGia',
                                    backref=' phieudanhgiaBackrefLoaiPhong')
     dscacphongdadat = db.relationship('DsPhongDaDat', backref='dscacphongdadatBackrefPhong')
-    dscacphongdadat2 = db.relationship('DsPhongDaDat2', backref='dscacphongdadat2BackrefPhong')
+    dsphieuthuephong = db.relationship('DsPhongDaThue', backref='dsphieuthuephongBackrefPhong')
 
 
 class DonViTinhTien(db.Model):
@@ -86,7 +86,7 @@ class LoaiPhong_DonVitinhTien(db.Model):
     donvitinhtien_id = db.Column(Integer, ForeignKey(DonViTinhTien.id), nullable=False)
     giatien = db.Column(Float, nullable=False)
     dsphongdadat = db.relationship('DsPhongDaDat', backref='dsphongdadatBackrefLoaiPhong_DonVitinhTien')
-    dscacphongdadat2 = db.relationship('DsPhongDaDat2', backref='dscacphongdadat2BackrefLoaiPhong_DonVitinhTien')
+    dsphongdathue = db.relationship('DsPhongDaThue', backref='dscacphongdathueBackrefLoaiPhong_DonVitinhTien')
 
 
 class PhieuDatPhong(db.Model):
@@ -95,7 +95,7 @@ class PhieuDatPhong(db.Model):
     ngaybatdau = Column(DateTime, nullable=False)
     ngayketthuc = Column(DateTime, nullable=False)
     dsphieudatphong = db.relationship('DsPhieuDatPhong', backref='DsPhieuDatPhongBackrefPhieuDatPhong')
-    dscacphongdadat = db.relationship('DsPhongDaDat', backref='dscacphongdadatBackrefPhieuDatPhong')
+    dsphongdathue = db.relationship('DsPhongDaDat', backref='dscacphongdadatBackrefPhieuDatPhong')
     khachhang = db.relationship('KhachHang', backref='khachhangBackrefPhieuDatPhong')
 
 
@@ -116,19 +116,19 @@ class PhieuThuePhong(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     ngaybatdau = Column(DateTime, nullable=False)
     ngayketthuc = Column(DateTime, nullable=False)
-    dsphieudatphong2 = db.relationship('DsPhieuDatPhong2', backref='DsPhieuDatPhong2BackrefPhieuThuePhong')
-    dscacphongdadat2 = db.relationship('DsPhongDaDat2', backref='dscacphongdadat2BackrefPhieuThuePhong')
+    dsphieuthuephong = db.relationship('DsPhieuThuePhong', backref='DsPhieuThuePhongBackrefPhieuThuePhong')
+    dscacphongthue = db.relationship('DsPhongDaThue', backref='dsphongdathueBackrefPhieuThuePhong')
     khachhang = db.relationship('KhachHang', backref='khachhangBackrefPhieuThuePhong')
     khachhang_id = db.Column(Integer, ForeignKey(KhachHang.id), nullable=False)
 
 
-class DsPhieuDatPhong2(db.Model):
+class DsPhieuThuePhong(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     khachhang_id = db.Column(Integer, ForeignKey(KhachHang.id), nullable=False)
     phieuthuephong_id = db.Column(Integer, ForeignKey(PhieuThuePhong.id), nullable=False)
 
 
-class DsPhongDaDat2(db.Model):
+class DsPhongDaThue(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     phong_id = db.Column(Integer, ForeignKey(Phong.id), nullable=False)
     loaiphong_donvitinhtien_id = db.Column(Integer, ForeignKey(LoaiPhong_DonVitinhTien.id), nullable=False)
@@ -171,6 +171,11 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
         import hashlib
+
+        loaikhachhang1 = LoaiKhachHang(tenloaikhachhang ='Viet Nam')
+        loaikhachhang2 = LoaiKhachHang(tenloaikhachhang='Others')
+        db.session.add_all([loaikhachhang1, loaikhachhang2])
+        db.session.commit()
 
         donvi1 = DonViTinhTien(ten='Giờ')
         donvi2 = DonViTinhTien(ten='Ngày')

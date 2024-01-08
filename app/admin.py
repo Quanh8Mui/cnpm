@@ -63,7 +63,6 @@ class AuthenticatedNhanVienPhieuDatPhong(ModelView):
     def khachhangid_formatter(self, context, model, name):
         khachhangs = []
         ks = dao.get_dspdp_by_phieu_dat_phong_id(model.id)
-
         for k in ks:
             khachhang = dao.get_KhachHang_by_id(k.khachhang_id)
             khachhangs.append(khachhang.tenkhachhang)
@@ -90,8 +89,11 @@ class AuthenticatedNhanVienLapPhieuThuePhong(BaseView):
     @expose('/')
     def index(self):
         phong_available = dao.get_phong_available_by_tinhtrang()
-        length = len(phong_available)
-        return self.render('admin/lapphieuthuephong.html', phong_available=phong_available, length=length)
+        phong_unavailable = dao.get_phong_unavailable_by_tinhtrang()
+        length1 = len(phong_available)
+        length2 = len(phong_unavailable)
+        return self.render('admin/lapphieuthuephong.html', phong_available=phong_available, length1=length1,
+                           length2=length2, phong_unavailable=phong_unavailable)
 
 
 class LapPhieuThuePhongView(AuthenticatedNhanVienLapPhieuThuePhong):
