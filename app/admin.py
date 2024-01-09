@@ -46,7 +46,7 @@ class AuthenticatedNhanVienPhieuDatPhong(ModelView):
     def is_accessible(self):
         return current_user.is_authenticated and current_user.user_role == UserRoleEnum.NHAN_VIEN
 
-    column_list = ['khachhang.tenkhachhang', 'ngaybatdau', 'ngayketthuc', 'khachhang.cccd',
+    column_list = ['id', 'khachhang.tenkhachhang', 'ngaybatdau', 'ngayketthuc', 'khachhang.cccd',
                    'dscacphongdadat.phong_id', 'dsphieudatphong.khachhang_id']
     column_labels = {'khachhang.tenkhachhang': 'Tên khách hàng', 'dskb_lichkham': 'Lịch khám',
                      'benhnhan_name': 'Họ tên',
@@ -115,6 +115,15 @@ class AuthenticatedNhanVienHoaDon(ModelView):
 class HoaDonView(AuthenticatedNhanVienHoaDon):
     pass
 
+class AuthenticatedAdminThayDoiQuyDinh(ModelView):
+    def is_accessible(self):
+        return current_user.is_authenticated and current_user.user_role == UserRoleEnum.ADMIN
+
+    can_edit = True
+
+
+class ThayDoiQuyDinhView(AuthenticatedAdminThayDoiQuyDinh):
+    pass
 
 class MyLogoutView(AuthenticatedUser):
     @expose("/")
@@ -123,8 +132,11 @@ class MyLogoutView(AuthenticatedUser):
         return redirect('/admin')
 
 
+
 admin.add_view(NguoiQuanTriView(NguoiQuanTri, db.session, name="Quản lí nhân sự"))
 admin.add_view(PhieuDatPhongView(PhieuDatPhong, db.session, name="Tra cứu lịch đặt phòng"))
 admin.add_view(LapPhieuThuePhongView(name='Lập phiếu thuê phòng', endpoint='lapphieuthuephong'))
 admin.add_view(HoaDonView(HoaDon, db.session, name="Hóa đơn thanh toán"))
 admin.add_view(MyLogoutView(name='Đăng xuất'))
+admin.add_view(ThayDoiQuyDinhView(ThongSoQuyDinh, db.session, name='Thay đổi quy định'))
+

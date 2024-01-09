@@ -268,5 +268,11 @@ def lapphieuthuephong():
                            length2=length2, phong_unavailable=phong_unavailable, flag=flag)
 
 
+@app.route('/logout_manager')
+@login_required
+def logout_manager():
+    logout_user()
+    return redirect('/admin')
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

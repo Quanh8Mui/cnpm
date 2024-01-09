@@ -323,3 +323,8 @@ if __name__ == "__main__":
                             phong31, phong32, phong33, phong34, phong35, phong36, phong37, phong38, phong39, phong40,
                             admin])
         db.session.commit()
+
+        quydinh1 = ThongSoQuyDinh(key='songuoi1phong', value='3')
+        quydinh2 = ThongSoQuyDinh(key='heso', value='1.5')
+        db.session.add_all([quydinh1, quydinh2])
+        db.session.commit()
